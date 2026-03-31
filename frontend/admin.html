@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin | DriveNow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="admin.css"> </head>
+<body class="admin-body">
+
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">Drive<span>Now</span></a>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="active"><a href="#" data-target="sec-dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#" data-target="sec-veiculos"><i class="fas fa-car"></i> Veículos</a></li>
+                <li><a href="#" data-target="sec-locatarios"><i class="fas fa-user"></i> Locatários</a></li>
+                <li><a href="#" data-target="sec-locacoes"><i class="fas fa-clipboard-list"></i> Locações</a></li>
+                <li><a href="#" data-target="sec-financeiro"><i class="fas fa-money-bill-wave"></i> Financeiro</a></li>
+                <li><a href="#" data-target="sec-manutencao"><i class="fas fa-wrench"></i> Manutenção</a></li>
+                <li><a href="#" data-target="sec-relatorios"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                <li class="divider"></li>
+                <li><a href="#" data-target="sec-config"><i class="fas fa-cog"></i> Configurações</a></li>
+                <li><a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Deslogar</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+                    <div class="header-title">
+                        <h2 id="page-title">Dashboard Visão Geral</h2>
+                    </div>
+                </div>
+                <div class="header-user">
+                    <span id="admin-name">Olá, Admin</span>
+                    <div class="avatar"><i class="fas fa-user-shield"></i></div>
+                </div>
+            </header>
+
+            <!-- DASHBOARD -->
+            <div id="sec-dashboard" class="admin-section" style="display: block;">
+                <!-- Métricas Principais -->
+                <div class="dashboard-metrics">
+                    <div class="stat-card primary">
+                        <div class="stat-info">
+                            <h3>Reservas Ativas</h3>
+                            <p class="number">12</p>
+                            <span class="change positive">+8% vs ontem</span>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-key"></i></div>
+                    </div>
+                    <div class="stat-card success">
+                        <div class="stat-info">
+                            <h3>Veículos Disponíveis</h3>
+                            <p class="number">24</p>
+                            <span class="change neutral">de 32 total</span>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-car-side"></i></div>
+                    </div>
+                    <div class="stat-card warning">
+                        <div class="stat-info">
+                            <h3>Total de Clientes</h3>
+                            <p class="number">156</p>
+                            <span class="change positive">+12 este mês</span>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    </div>
+                    <div class="stat-card info">
+                        <div class="stat-info">
+                            <h3>Faturamento (Mês)</h3>
+                            <p class="number">R$ 18.450</p>
+                            <span class="change positive">+15% vs mês anterior</span>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                    </div>
+                </div>
+
+                <!-- Gráficos e Análises -->
+                <div class="dashboard-charts">
+                    <div class="chart-container">
+                        <h3>Receita Mensal</h3>
+                        <div class="chart-placeholder">
+                            <div class="chart-bar" style="height: 60%; background: var(--primary-color);"><span>R$ 18.4k</span></div>
+                            <div class="chart-bar" style="height: 45%; background: var(--success-color);"><span>R$ 15.6k</span></div>
+                            <div class="chart-bar" style="height: 80%; background: var(--warning-color);"><span>R$ 22.1k</span></div>
+                            <div class="chart-bar" style="height: 35%; background: var(--danger-color);"><span>R$ 12.3k</span></div>
+                            <div class="chart-bar" style="height: 70%; background: var(--primary-color);"><span>R$ 19.8k</span></div>
+                            <div class="chart-bar" style="height: 55%; background: var(--success-color);"><span>R$ 16.2k</span></div>
+                        </div>
+                        <div class="chart-labels">
+                            <span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Utilização da Frota</h3>
+                        <div class="pie-chart">
+                            <div class="pie-segment" style="background: conic-gradient(var(--success-color) 0% 75%, var(--warning-color) 75% 85%, var(--danger-color) 85% 100%);">
+                                <div class="pie-center">
+                                    <span class="pie-percentage">75%</span>
+                                    <span class="pie-label">Alugados</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item"><span class="legend-color" style="background: var(--success-color);"></span> Disponível (75%)</div>
+                            <div class="legend-item"><span class="legend-color" style="background: var(--warning-color);"></span> Manutenção (10%)</div>
+                            <div class="legend-item"><span class="legend-color" style="background: var(--danger-color);"></span> Indisponível (15%)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Atividades Recentes -->
+                <div class="recent-activities">
+                    <div class="section-header">
+                        <h3>Atividades Recentes</h3>
+                        <button class="btn btn-outline">Ver Todas</button>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon success"><i class="fas fa-check-circle"></i></div>
+                            <div class="activity-content">
+                                <p><strong>João Silva</strong> alugou Audi RS7</p>
+                                <span class="activity-time">há 2 horas</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon warning"><i class="fas fa-tools"></i></div>
+                            <div class="activity-content">
+                                <p>Manutenção agendada para BMW X5</p>
+                                <span class="activity-time">há 4 horas</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon primary"><i class="fas fa-user-plus"></i></div>
+                            <div class="activity-content">
+                                <p>Novo cliente <strong>Maria Santos</strong> cadastrado</p>
+                                <span class="activity-time">há 6 horas</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon danger"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="activity-content">
+                                <p>Locação atrasada - Volkswagen Polo</p>
+                                <span class="activity-time">há 8 horas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alertas e Notificações -->
+                <div class="dashboard-alerts">
+                    <div class="alert-card warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div class="alert-content">
+                            <h4>3 veículos com manutenção pendente</h4>
+                            <p>Revisão preventiva necessária</p>
+                        </div>
+                        <button class="btn btn-sm">Ver Detalhes</button>
+                    </div>
+                    <div class="alert-card info">
+                        <i class="fas fa-calendar-check"></i>
+                        <div class="alert-content">
+                            <h4>5 reservas para hoje</h4>
+                            <p>Prepare os veículos</p>
+                        </div>
+                        <button class="btn btn-sm">Ver Agenda</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VEÍCULOS -->
+            <div id="sec-veiculos" class="admin-section" style="display: none;">
+                <div class="section-header">
+                    <h3>Gerenciar Veículos</h3>
+                    <button class="btn btn-primary" onclick="openAddVehicleModal()" style="padding: 8px 20px;">+ Adicionar Veículo</button>
+                </div>
+
+                <!-- Estatísticas da Frota -->
+                <div class="fleet-stats">
+                    <div class="stat-mini">
+                        <span class="stat-number">32</span>
+                        <span class="stat-label">Total de Veículos</span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-number">24</span>
+                        <span class="stat-label">Disponíveis</span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">Alugados</span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Em Manutenção</span>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <input type="text" id="vehicle-search" placeholder="Buscar veículo..." class="filter-input">
+                    <select class="filter-select">
+                        <option>Todos os Status</option>
+                        <option>Disponível</option>
+                        <option>Alugado</option>
+                        <option>Manutenção</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>Todas as Categorias</option>
+                        <option>Luxo</option>
+                        <option>Executivo</option>
+                        <option>Econômico</option>
+                    </select>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Veículo</th>
+                            <th>Placa</th>
+                            <th>Valor/Dia</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#V001</td>
+                            <td>Audi RS7</td>
+                            <td>ABC-1234</td>
+                            <td>R$ 450,00</td>
+                            <td><span class="status active">Disponível</span></td>
+                            <td><button class="btn-action" title="Editar"><i class="fas fa-edit"></i></button> <button class="btn-action" title="Deletar"><i class="fas fa-trash"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td>#V002</td>
+                            <td>Range Rover Velar</td>
+                            <td>XYZ-5678</td>
+                            <td>R$ 520,00</td>
+                            <td><span class="status completed">Alugado</span></td>
+                            <td><button class="btn-action" title="Editar"><i class="fas fa-edit"></i></button> <button class="btn-action" title="Deletar"><i class="fas fa-trash"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td>#V003</td>
+                            <td>BMW X5</td>
+                            <td>DEF-9012</td>
+                            <td>R$ 380,00</td>
+                            <td><span class="status pending">Manutenção</span></td>
+                            <td><button class="btn-action" title="Editar"><i class="fas fa-edit"></i></button> <button class="btn-action" title="Deletar"><i class="fas fa-trash"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- LOCATÁRIOS -->
+            <div id="sec-locatarios" class="admin-section" style="display: none;">
+                <div class="section-header">
+                    <h3>Gerenciar Locatários</h3>
+                    <button class="btn btn-primary" onclick="openAddClientModal()" style="padding: 8px 20px;">+ Adicionar Cliente</button>
+                </div>
+                <div class="filter-bar">
+                    <input type="text" id="client-search" placeholder="Buscar por email ou nome..." class="filter-input">
+                    <select class="filter-select">
+                        <option>Todos os Planos</option>
+                        <option>Plus</option>
+                        <option>Pro</option>
+                        <option>Max</option>
+                    </select>
+                </div>
+                <div class="client-stats">
+                    <div class="stat-mini">
+                        <span class="stat-number">156</span>
+                        <span class="stat-label">Total de Clientes</span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-number">89</span>
+                        <span class="stat-label">Clientes Ativos</span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-number">67</span>
+                        <span class="stat-label">Novos este mês</span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-number">4.2</span>
+                        <span class="stat-label">Média de Locações</span>
+                    </div>
+                </div>
+
+                <!-- Distribuição de Planos -->
+                <div class="plan-distribution">
+                    <h4>Distribuição por Plano</h4>
+                    <div class="plan-bars">
+                        <div class="plan-bar">
+                            <span class="plan-name">Plus</span>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 35%; background: var(--warning-color);"></div>
+                            </div>
+                            <span class="plan-percentage">35%</span>
+                        </div>
+                        <div class="plan-bar">
+                            <span class="plan-name">Pro</span>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 45%; background: var(--primary-color);"></div>
+                            </div>
+                            <span class="plan-percentage">45%</span>
+                        </div>
+                        <div class="plan-bar">
+                            <span class="plan-name">Max</span>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 20%; background: var(--success-color);"></div>
+                            </div>
+                            <span class="plan-percentage">20%</span>
+                        </div>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome/Email</th>
+                            <th>Plano</th>
+                            <th>Data Cadastro</th>
+                            <th>Locações</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#C001</td>
+                            <td>João Silva<br><small>joao@email.com</small></td>
+                            <td><span class="badge badge-pro">Pro</span></td>
+                            <td>15/01/2026</td>
+                            <td>5</td>
+                            <td><span class="status active">Ativo</span></td>
+                            <td><button class="btn-action" title="Ver Detalhes" onclick="viewClientDetails('C001')"><i class="fas fa-eye"></i></button> <button class="btn-action" title="Editar" onclick="editClient('C001')"><i class="fas fa-edit"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td>#C002</td>
+                            <td>Maria Santos<br><small>maria@email.com</small></td>
+                            <td><span class="badge badge-plus">Plus</span></td>
+                            <td>20/02/2026</td>
+                            <td>2</td>
+                            <td><span class="status active">Ativo</span></td>
+                            <td><button class="btn-action" title="Ver Detalhes" onclick="viewClientDetails('C002')"><i class="fas fa-eye"></i></button> <button class="btn-action" title="Editar" onclick="editClient('C002')"><i class="fas fa-edit"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td>#C003</td>
+                            <td>Carlos Oliveira<br><small>carlos@email.com</small></td>
+                            <td><span class="badge badge-max">Max</span></td>
+                            <td>10/03/2026</td>
+                            <td>12</td>
+                            <td><span class="status active">Ativo</span></td>
+                            <td><button class="btn-action" title="Ver Detalhes" onclick="viewClientDetails('C003')"><i class="fas fa-eye"></i></button> <button class="btn-action" title="Editar" onclick="editClient('C003')"><i class="fas fa-edit"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td>#C004</td>
+                            <td>Ana Costa<br><small>ana@email.com</small></td>
+                            <td><span class="badge badge-plus">Plus</span></td>
+                            <td>05/03/2026</td>
+                            <td>1</td>
+                            <td><span class="status pending">Pendente</span></td>
+                            <td><button class="btn-action" title="Ver Detalhes" onclick="viewClientDetails('C004')"><i class="fas fa-eye"></i></button> <button class="btn-action" title="Editar" onclick="editClient('C004')"><i class="fas fa-edit"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- LOCAÇÕES -->
+            <div id="sec-locacoes" class="admin-section" style="display: none;">
+                <div class="section-header">
+                    <h3>Gerenciar Locações</h3>
+                    <button class="btn btn-primary" onclick="openNewReservationModal()" style="padding: 8px 20px;">+ Nova Locação</button>
+                </div>
+                <div class="filter-bar">
+                    <input type="text" id="reservation-search" placeholder="Buscar por veículo ou cliente..." class="filter-input">
+                    <select class="filter-select">
+                        <option>Todos os Status</option>
+                        <option>Em Andamento</option>
+                        <option>Concluído</option>
+                        <option>Cancelado</option>
+                        <option>Pendente</option>
+                    </select>
+                    <input type="date" class="filter-input" placeholder="Data inicial">
+                    <input type="date" class="filter-input" placeholder="Data final">
+                    <select class="filter-select">
+                        <option>Todas as Categorias</option>
+                        <option>Luxo</option>
+                        <option>Executivo</option>
+                        <option>Econômico</option>
+                    </select>
+                </div>
+                <div class="reservation-stats">
+                    <div class="stat-mini">
+                        <span class="stat-number">12</span>
+                        <span class="stat-label">Ativas</span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-number">45</span>
+                        <span class="stat-label">Este mês</span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Atrasadas</span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-number">R$ 15.2k</span>
+                        <span class="stat-label">Receita Pendente</span>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID Locação</th>
+                            <th>Veículo</th>
+                            <th>Cliente</th>
+                            <th>Período</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#LOC001</td>
+                            <td>Audi RS7</td>
+                            <td>João Silva</td>
+                            <td>30/03 - 02/04</td>
+                            <td>R$ 1.350,00</td>
+                            <td><span class="status active">Em Andamento</span></td>
+                            <td>
+                                <button class="btn-action" title="Editar" onclick="editReservation('LOC001')"><i class="fas fa-edit"></i></button>
+                                <button class="btn-action" title="Finalizar" onclick="completeReservation('LOC001')"><i class="fas fa-check"></i></button>
+                                <button class="btn-action" title="Cancelar" onclick="cancelReservation('LOC001')"><i class="fas fa-times"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#LOC002</td>
+                            <td>Range Rover</td>
+                            <td>Maria Santos</td>
+                            <td>28/03 - 30/03</td>
+                            <td>R$ 1.040,00</td>
+                            <td><span class="status completed">Concluído</span></td>
+                            <td>
+                                <button class="btn-action" title="Ver Detalhes" onclick="viewReservationDetails('LOC002')"><i class="fas fa-eye"></i></button>
+                                <button class="btn-action" title="Recibo" onclick="generateReceipt('LOC002')"><i class="fas fa-file-pdf"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#LOC003</td>
+                            <td>BMW X5</td>
+                            <td>Carlos Oliveira</td>
+                            <td>01/04 - 05/04</td>
+                            <td>R$ 1.520,00</td>
+                            <td><span class="status pending">Pendente</span></td>
+                            <td>
+                                <button class="btn-action" title="Confirmar" onclick="confirmReservation('LOC003')"><i class="fas fa-check-circle"></i></button>
+                                <button class="btn-action" title="Editar" onclick="editReservation('LOC003')"><i class="fas fa-edit"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#LOC004</td>
+                            <td>Volkswagen Polo</td>
+                            <td>Ana Costa</td>
+                            <td>25/03 - 27/03</td>
+                            <td>R$ 360,00</td>
+                            <td><span class="status completed">Concluído</span></td>
+                            <td>
+                                <button class="btn-action" title="Ver Detalhes" onclick="viewReservationDetails('LOC004')"><i class="fas fa-eye"></i></button>
+                                <button class="btn-action" title="Recibo" onclick="generateReceipt('LOC004')"><i class="fas fa-file-pdf"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- FINANCEIRO -->
+            <div id="sec-financeiro" class="admin-section" style="display: none;">
+                <div class="section-header">
+                    <h3>Relatório Financeiro</h3>
+                </div>
+                <div class="financial-cards">
+                    <div class="financial-card">
+                        <h4>Receita Total (Mês)</h4>
+                        <p class="amount">R$ 18.450,00</p>
+                        <span class="change positive">+12% vs mês anterior</span>
+                    </div>
+                    <div class="financial-card">
+                        <h4>Receita Pendente</h4>
+                        <p class="amount">R$ 2.100,00</p>
+                        <span class="change neutral">3 pendências</span>
+                    </div>
+                    <div class="financial-card">
+                        <h4>Ticket Médio</h4>
+                        <p class="amount">R$ 1.234,00</p>
+                        <span class="change neutral">Por locação</span>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Locação</th>
+                            <th>Valor</th>
+                            <th>Data</th>
+                            <th>Método</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#PG001</td>
+                            <td>#LOC001</td>
+                            <td>R$ 1.350,00</td>
+                            <td>30/03/2026</td>
+                            <td>Débito</td>
+                            <td><span class="status active">Pago</span></td>
+                        </tr>
+                        <tr>
+                            <td>#PG002</td>
+                            <td>#LOC002</td>
+                            <td>R$ 1.040,00</td>
+                            <td>28/03/2026</td>
+                            <td>Crédito</td>
+                            <td><span class="status active">Pago</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- MANUTENÇÃO -->
+            <div id="sec-manutencao" class="admin-section" style="display: none;">
+                <div class="section-header">
+                    <h3>Manutenção de Veículos</h3>
+                    <button class="btn btn-primary" onclick="openAddMaintenanceModal()" style="padding: 8px 20px;">+ Nova Manutenção</button>
+                </div>
+                <div class="maintenance-overview">
+                    <div class="overview-card">
+                        <h4>Veículos em Manutenção</h4>
+                        <span class="overview-number">3</span>
+                    </div>
+                    <div class="overview-card">
+                        <h4>Manutenções este mês</h4>
+                        <span class="overview-number">8</span>
+                    </div>
+                    <div class="overview-card">
+                        <h4>Custo médio</h4>
+                        <span class="overview-number">R$ 450</span>
+                    </div>
+                </div>
+                <div class="filter-bar">
+                    <select class="filter-select">
+                        <option>Todos os Tipos</option>
+                        <option>Revisão</option>
+                        <option>Reparo</option>
+                        <option>Substituição</option>
+                        <option>Lavagem</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>Todos os Status</option>
+                        <option>Em Andamento</option>
+                        <option>Concluído</option>
+                        <option>Atrasado</option>
+                    </select>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Veículo</th>
+                            <th>Tipo</th>
+                            <th>Data Início</th>
+                            <th>Previsão</th>
+                            <th>Custo</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#MNT001</td>
+                            <td>BMW X5</td>
+                            <td>Revisão</td>
+                            <td>25/03/2026</td>
+                            <td>02/04/2026</td>
+                            <td>R$ 850,00</td>
+                            <td><span class="status pending">Em Progresso</span></td>
+                            <td>
+                                <button class="btn-action" title="Editar" onclick="editMaintenance('MNT001')"><i class="fas fa-edit"></i></button>
+                                <button class="btn-action" title="Finalizar" onclick="completeMaintenance('MNT001')"><i class="fas fa-check"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#MNT002</td>
+                            <td>Audi RS7</td>
+                            <td>Reparo</td>
+                            <td>20/03/2026</td>
+                            <td>25/03/2026</td>
+                            <td>R$ 1.200,00</td>
+                            <td><span class="status completed">Concluído</span></td>
+                            <td>
+                                <button class="btn-action" title="Ver Detalhes" onclick="viewMaintenanceDetails('MNT002')"><i class="fas fa-eye"></i></button>
+                                <button class="btn-action" title="Recibo" onclick="generateMaintenanceReceipt('MNT002')"><i class="fas fa-file-pdf"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#MNT003</td>
+                            <td>Range Rover</td>
+                            <td>Substituição</td>
+                            <td>28/03/2026</td>
+                            <td>05/04/2026</td>
+                            <td>R$ 2.500,00</td>
+                            <td><span class="status active">Aguardando Peças</span></td>
+                            <td>
+                                <button class="btn-action" title="Editar" onclick="editMaintenance('MNT003')"><i class="fas fa-edit"></i></button>
+                                <button class="btn-action" title="Atualizar Status" onclick="updateMaintenanceStatus('MNT003')"><i class="fas fa-clock"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- RELATÓRIOS -->
+            <div id="sec-relatorios" class="admin-section" style="display: none;">
+                <div class="section-header">
+                    <h3>Relatórios</h3>
+                </div>
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>Desempenho Mensal</h4>
+                        <p>Ver gráficos de receita e utilizações</p>
+                        <button class="btn btn-primary btn-sm" onclick="generateReport('monthly')">Gerar</button>
+                    </div>
+                    <div class="report-card">
+                        <i class="fas fa-users"></i>
+                        <h4>Análise de Clientes</h4>
+                        <p>Dados demográficos e preferências</p>
+                        <button class="btn btn-primary btn-sm" onclick="generateReport('clients')">Gerar</button>
+                    </div>
+                    <div class="report-card">
+                        <i class="fas fa-car"></i>
+                        <h4>Frota</h4>
+                        <p>Utilização e disponibilidade</p>
+                        <button class="btn btn-primary btn-sm" onclick="generateReport('fleet')">Gerar</button>
+                    </div>
+                    <div class="report-card">
+                        <i class="fas fa-file-pdf"></i>
+                        <h4>Exportar Dados</h4>
+                        <p>Baixar relatórios em PDF/Excel</p>
+                        <button class="btn btn-primary btn-sm" onclick="exportData()">Exportar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONFIGURAÇÕES -->
+            <div id="sec-config" class="admin-section" style="display: none;">
+                <div class="section-header">
+                    <h3>Configurações do Sistema</h3>
+                    <div class="header-actions">
+                        <button class="btn btn-outline" onclick="resetSettings()">
+                            <i class="fas fa-undo"></i> Restaurar Padrões
+                        </button>
+                        <button class="btn btn-primary" onclick="saveSettings()">
+                            <i class="fas fa-save"></i> Salvar Alterações
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sistema de Abas para Configurações -->
+                <div class="settings-tabs">
+                    <button class="settings-tab active" data-tab="general">
+                        <i class="fas fa-cogs"></i> Geral
+                    </button>
+                    <button class="settings-tab" data-tab="financial">
+                        <i class="fas fa-dollar-sign"></i> Financeiro
+                    </button>
+                    <button class="settings-tab" data-tab="notifications">
+                        <i class="fas fa-bell"></i> Notificações
+                    </button>
+                    <button class="settings-tab" data-tab="security">
+                        <i class="fas fa-shield-alt"></i> Segurança
+                    </button>
+                    <button class="settings-tab" data-tab="integrations">
+                        <i class="fas fa-plug"></i> Integrações
+                    </button>
+                </div>
+
+                <!-- Aba Geral -->
+                <div id="tab-general" class="settings-content active">
+                    <div class="settings-card">
+                        <h4><i class="fas fa-building"></i> Informações da Empresa</h4>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <label>Nome da Empresa</label>
+                                <input type="text" value="DriveNow Locadora" class="setting-input">
+                            </div>
+                            <div class="setting-item">
+                                <label>CNPJ</label>
+                                <input type="text" value="12.345.678/0001-90" class="setting-input" placeholder="00.000.000/0000-00">
+                            </div>
+                            <div class="setting-item">
+                                <label>Telefone</label>
+                                <input type="tel" value="(11) 99999-9999" class="setting-input">
+                            </div>
+                            <div class="setting-item">
+                                <label>Email Principal</label>
+                                <input type="email" value="contato@drivenow.com" class="setting-input">
+                            </div>
+                            <div class="setting-item full-width">
+                                <label>Endereço</label>
+                                <input type="text" value="Rua das Locações, 123 - São Paulo/SP" class="setting-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <h4><i class="fas fa-clock"></i> Horário de Funcionamento</h4>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <label>Horário Abertura</label>
+                                <input type="time" value="08:00" class="setting-input">
+                            </div>
+                            <div class="setting-item">
+                                <label>Horário Fechamento</label>
+                                <input type="time" value="18:00" class="setting-input">
+                            </div>
+                            <div class="setting-item">
+                                <label>Fuso Horário</label>
+                                <select class="setting-input">
+                                    <option value="America/Sao_Paulo" selected>America/São Paulo (GMT-3)</option>
+                                    <option value="America/Rio_Branco">America/Rio Branco (GMT-5)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-item checkbox">
+                            <input type="checkbox" id="weekends" checked>
+                            <label for="weekends">Funcionamento aos finais de semana</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aba Financeiro -->
+                <div id="tab-financial" class="settings-content">
+                    <div class="settings-card">
+                        <h4><i class="fas fa-calculator"></i> Taxas e Valores</h4>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <label>Taxa de Comissão (%)</label>
+                                <input type="number" value="15" min="0" max="50" step="0.5" class="setting-input">
+                                <small>Porcentagem sobre cada locação</small>
+                            </div>
+                            <div class="setting-item">
+                                <label>Multa por Atraso (R$/dia)</label>
+                                <input type="number" value="50" min="0" step="5" class="setting-input">
+                                <small>Valor cobrado por dia de atraso</small>
+                            </div>
+                            <div class="setting-item">
+                                <label>Taxa de Cancelamento (%)</label>
+                                <input type="number" value="10" min="0" max="100" class="setting-input">
+                                <small>Taxa aplicada em cancelamentos</small>
+                            </div>
+                            <div class="setting-item">
+                                <label>Valor Mínimo de Locação (R$)</label>
+                                <input type="number" value="100" min="0" step="10" class="setting-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <h4><i class="fas fa-credit-card"></i> Formas de Pagamento</h4>
+                        <div class="payment-methods">
+                            <div class="setting-item checkbox">
+                                <input type="checkbox" id="credit" checked>
+                                <label for="credit">Cartão de Crédito</label>
+                            </div>
+                            <div class="setting-item checkbox">
+                                <input type="checkbox" id="debit" checked>
+                                <label for="debit">Cartão de Débito</label>
+                            </div>
+                            <div class="setting-item checkbox">
+                                <input type="checkbox" id="pix" checked>
+                                <label for="pix">PIX</label>
+                            </div>
+                            <div class="setting-item checkbox">
+                                <input type="checkbox" id="boleto">
+                                <label for="boleto">Boleto Bancário</label>
+                            </div>
+                            <div class="setting-item checkbox">
+                                <input type="checkbox" id="transfer">
+                                <label for="transfer">Transferência Bancária</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aba Notificações -->
+                <div id="tab-notifications" class="settings-content">
+                    <div class="settings-card">
+                        <h4><i class="fas fa-envelope"></i> Configurações de Email</h4>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <label>SMTP Server</label>
+                                <input type="text" value="smtp.gmail.com" class="setting-input">
+                            </div>
+                            <div class="setting-item">
+                                <label>Porta SMTP</label>
+                                <input type="number" value="587" class="setting-input">
+                            </div>
+                            <div class="setting-item">
+                                <label>Email Remetente</label>
+                                <input type="email" value="admin@drivenow.com" class="setting-input">
+                            </div>
+                            <div class="setting-item">
+                                <label>Senha do Email</label>
+                                <input type="password" value="••••••••" class="setting-input">
+                            </div>
+                        </div>
+                        <button class="btn btn-outline btn-sm" onclick="testEmailConnection()">
+                            <i class="fas fa-test-tube"></i> Testar Conexão
+                        </button>
+                    </div>
+
+                    <div class="settings-card">
+                        <h4><i class="fas fa-bell"></i> Tipos de Notificação</h4>
+                        <div class="notification-settings">
+                            <div class="notification-item">
+                                <div class="notification-info">
+                                    <h5>Nova Reserva</h5>
+                                    <p>Notificar quando um cliente faz uma reserva</p>
+                                </div>
+                                <div class="notification-controls">
+                                    <input type="checkbox" id="notify-reservation" checked>
+                                    <select class="setting-input small">
+                                        <option>Email + Push</option>
+                                        <option>Apenas Email</option>
+                                        <option>Apenas Push</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-info">
+                                    <h5>Cancelamento</h5>
+                                    <p>Notificar quando uma reserva é cancelada</p>
+                                </div>
+                                <div class="notification-controls">
+                                    <input type="checkbox" id="notify-cancel" checked>
+                                    <select class="setting-input small">
+                                        <option>Email + Push</option>
+                                        <option>Apenas Email</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-info">
+                                    <h5>Atraso na Devolução</h5>
+                                    <p>Alertar sobre veículos não devolvidos no prazo</p>
+                                </div>
+                                <div class="notification-controls">
+                                    <input type="checkbox" id="notify-delay" checked>
+                                    <select class="setting-input small">
+                                        <option>Email + Push</option>
+                                        <option>Apenas Email</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aba Segurança -->
+                <div id="tab-security" class="settings-content">
+                    <div class="settings-card">
+                        <h4><i class="fas fa-lock"></i> Políticas de Senha</h4>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <label>Comprimento Mínimo</label>
+                                <input type="number" value="8" min="6" max="20" class="setting-input">
+                            </div>
+                            <div class="setting-item">
+                                <label>Expirar Senha (dias)</label>
+                                <input type="number" value="90" min="30" class="setting-input">
+                            </div>
+                        </div>
+                        <div class="password-requirements">
+                            <div class="setting-item checkbox">
+                                <input type="checkbox" id="require-uppercase" checked>
+                                <label for="require-uppercase">Exigir letra maiúscula</label>
+                            </div>
+                            <div class="setting-item checkbox">
+                                <input type="checkbox" id="require-lowercase" checked>
+                                <label for="require-lowercase">Exigir letra minúscula</label>
+                            </div>
+                            <div class="setting-item checkbox">
+                                <input type="checkbox" id="require-numbers" checked>
+                                <label for="require-numbers">Exigir números</label>
+                            </div>
+                            <div class="setting-item checkbox">
+                                <input type="checkbox" id="require-special" checked>
+                                <label for="require-special">Exigir caracteres especiais</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <h4><i class="fas fa-user-shield"></i> Controle de Acesso</h4>
+                        <div class="access-control">
+                            <div class="setting-item">
+                                <label>Tempo de Sessão (minutos)</label>
+                                <input type="number" value="60" min="15" class="setting-input">
+                            </div>
+                            <div class="setting-item checkbox">
+                                <input type="checkbox" id="two-factor" checked>
+                                <label for="two-factor">Exigir autenticação de dois fatores</label>
+                            </div>
+                            <div class="setting-item checkbox">
+                                <input type="checkbox" id="ip-restriction">
+                                <label for="ip-restriction">Restringir acesso por IP</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aba Integrações -->
+                <div id="tab-integrations" class="settings-content">
+                    <div class="settings-card">
+                        <h4><i class="fas fa-plug"></i> APIs e Integrações</h4>
+                        <div class="integration-item">
+                            <div class="integration-header">
+                                <div class="integration-info">
+                                    <i class="fab fa-whatsapp"></i>
+                                    <div>
+                                        <h5>WhatsApp Business API</h5>
+                                        <p>Envio de notificações via WhatsApp</p>
+                                    </div>
+                                </div>
+                                <div class="integration-status">
+                                    <span class="status active">Conectado</span>
+                                    <button class="btn btn-outline btn-sm">Configurar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="integration-item">
+                            <div class="integration-header">
+                                <div class="integration-info">
+                                    <i class="fas fa-credit-card"></i>
+                                    <div>
+                                        <h5>Gateway de Pagamento</h5>
+                                        <p>Processamento de pagamentos online</p>
+                                    </div>
+                                </div>
+                                <div class="integration-status">
+                                    <span class="status active">Mercado Pago</span>
+                                    <button class="btn btn-outline btn-sm">Configurar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="integration-item">
+                            <div class="integration-header">
+                                <div class="integration-info">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                    <div>
+                                        <h5>Google Maps API</h5>
+                                        <p>Integração com mapas e localização</p>
+                                    </div>
+                                </div>
+                                <div class="integration-status">
+                                    <span class="status inactive">Desconectado</span>
+                                    <button class="btn btn-primary btn-sm">Conectar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <h4><i class="fas fa-database"></i> Backup e Sincronização</h4>
+                        <div class="backup-settings">
+                            <div class="setting-item">
+                                <label>Frequência de Backup</label>
+                                <select class="setting-input">
+                                    <option value="daily" selected>Diário</option>
+                                    <option value="weekly">Semanal</option>
+                                    <option value="monthly">Mensal</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label>Local de Armazenamento</label>
+                                <select class="setting-input">
+                                    <option value="local" selected>Local</option>
+                                    <option value="cloud">Nuvem</option>
+                                    <option value="both">Ambos</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-outline" onclick="runBackup()">
+                                <i class="fas fa-download"></i> Executar Backup Agora
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status de Salvamento -->
+                <div class="save-status" id="save-status">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Configurações salvas com sucesso!</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

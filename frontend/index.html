@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin | DriveNow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="admin.css"> 
+</head>
+<body class="admin-body">
+
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">Drive<span>Now</span></a>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="active"><a href="#" class="menu-link" data-target="sec-dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#" class="menu-link" data-target="sec-veiculos"><i class="fas fa-car"></i> Veículos</a></li>
+                <li><a href="#" class="menu-link" data-target="sec-locatarios"><i class="fas fa-user"></i> Locatários</a></li>
+                <li><a href="#" class="menu-link" data-target="sec-locacoes"><i class="fas fa-clipboard-list"></i> Locações</a></li>
+                <li><a href="#" class="menu-link" data-target="sec-contratos"><i class="fas fa-file-contract"></i> Contratos</a></li>
+                <li><a href="#" class="menu-link" data-target="sec-financeiro"><i class="fas fa-money-bill-wave"></i> Financeiro</a></li>
+                <li><a href="#" class="menu-link" data-target="sec-manutencao"><i class="fas fa-wrench"></i> Manutenção</a></li>
+                <li><a href="#" class="menu-link" data-target="sec-relatorios"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                <li class="divider"></li>
+                <li><a href="#" class="menu-link" data-target="sec-config"><i class="fas fa-cog"></i> Configurações</a></li>
+                <li><a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Deslogar</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-title">
+                    <h2 id="page-title">Dashboard</h2>
+                </div>
+                <div class="header-user">
+                    <span id="admin-name">Olá, Admin</span>
+                    <div class="avatar"><i class="fas fa-user-shield"></i></div>
+                </div>
+            </header>
+
+            <div id="sec-dashboard" class="admin-section active">
+                <div class="dashboard-cards">
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>Reservas Ativas</h3>
+                            <p class="number">12</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-key"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>Veículos Disponíveis</h3>
+                            <p class="number">24</p>
+                        </div>
+                        <div class="stat-icon" style="background-color: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fas fa-car-side"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>Total de Clientes</h3>
+                            <p class="number">156</p>
+                        </div>
+                        <div class="stat-icon" style="background-color: rgba(245, 158, 11, 0.1); color: #f59e0b;"><i class="fas fa-users"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>Faturamento (Mês)</h3>
+                            <p class="number">R$ 18.450</p>
+                        </div>
+                        <div class="stat-icon" style="background-color: rgba(139, 92, 246, 0.1); color: #8b5cf6;"><i class="fas fa-dollar-sign"></i></div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Últimas Locações</h3>
+                        <button class="btn btn-primary" style="padding: 5px 15px; font-size: 0.9rem;">Ver Todas</button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Veículo</th>
+                                <th>Locatário</th>
+                                <th>Data Retirada</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#001</td>
+                                <td>Audi RS7</td>
+                                <td>joao@email.com</td>
+                                <td>30/03/2026</td>
+                                <td><span class="status active">Em Andamento</span></td>
+                                <td><button class="btn-action"><i class="fas fa-edit"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td>#002</td>
+                                <td>Range Rover Velar</td>
+                                <td>maria@email.com</td>
+                                <td>28/03/2026</td>
+                                <td><span class="status completed">Concluído</span></td>
+                                <td><button class="btn-action"><i class="fas fa-edit"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="sec-veiculos" class="admin-section" style="display: none;">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Gerenciamento de Frota</h3>
+                        <button class="btn btn-primary"><i class="fas fa-plus"></i> Novo Veículo</button>
+                    </div>
+                    <p>Aqui ficará a lista completa de veículos puxada do banco de dados, com opções para editar, excluir ou marcar como indisponível.</p>
+                </div>
+            </div>
+
+            <div id="sec-locatarios" class="admin-section" style="display: none;">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Base de Clientes</h3>
+                        <div class="search-bar">
+                            <input type="text" placeholder="Buscar cliente..." style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                        </div>
+                    </div>
+                    <p>Lista de usuários cadastrados no sistema, histórico de locações e documentos anexados.</p>
+                </div>
+            </div>
+
+            <div id="sec-locacoes" class="admin-section" style="display: none;">
+                <div class="content-section">
+                    <h3>Acompanhamento de Locações</h3>
+                    <p>Controle de retiradas e devoluções do dia.</p>
+                </div>
+            </div>
+
+            <div id="sec-contratos" class="admin-section" style="display: none;">
+                <div class="content-section">
+                    <h3>Contratos e Planos de Assinatura</h3>
+                    <p>Gerencie quem é Plus, Pro ou Max e gere documentos em PDF.</p>
+                </div>
+            </div>
+
+            <div id="sec-financeiro" class="admin-section" style="display: none;">
+                <div class="content-section">
+                    <h3>Controle Financeiro</h3>
+                    <p>Pagamentos recebidos, pendentes, estornos e integração com gateway de pagamento.</p>
+                </div>
+            </div>
+
+            <div id="sec-manutencao" class="admin-section" style="display: none;">
+                <div class="content-section">
+                    <h3>Manutenção de Veículos</h3>
+                    <p>Controle de troca de óleo, vistorias e carros na oficina.</p>
+                </div>
+            </div>
+
+            <div id="sec-relatorios" class="admin-section" style="display: none;">
+                <div class="content-section">
+                    <h3>Relatórios Gerenciais</h3>
+                    <p>Gráficos de lucro, veículos mais alugados e métricas de desempenho.</p>
+                </div>
+            </div>
+
+            <div id="sec-config" class="admin-section" style="display: none;">
+                <div class="content-section">
+                    <h3>Configurações do Sistema</h3>
+                    <p>Alterar senhas de acesso, taxas da locadora e informações de contato.</p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
