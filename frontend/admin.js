@@ -398,3 +398,234 @@ function runBackup() {
         alert('Backup concluído com sucesso! Arquivo salvo em: backup_2026-03-31.zip');
     }, 3000);
 }
+
+// === 5. FUNÇÕES DA ABA CONTATO ===
+
+// Marcar mensagem como lida
+function markAsRead(messageId) {
+    event.stopPropagation(); // Evitar abrir o modal
+    const messageItem = document.querySelector(`[onclick="openMessageModal(${messageId})"]`);
+    if (messageItem) {
+        messageItem.classList.remove('unread');
+        messageItem.classList.add('read');
+        // Aqui seria feita uma chamada para o backend para atualizar o status
+        showNotification('Mensagem marcada como lida', 'success');
+    }
+}
+
+// Marcar todas como lidas
+function markAllAsRead() {
+    const unreadMessages = document.querySelectorAll('.message-item.unread');
+    unreadMessages.forEach(message => {
+        message.classList.remove('unread');
+        message.classList.add('read');
+    });
+    showNotification(`${unreadMessages.length} mensagens marcadas como lidas`, 'success');
+}
+
+// Arquivar mensagem
+function archiveMessage(messageId) {
+    event.stopPropagation(); // Evitar abrir o modal
+    const messageItem = document.querySelector(`[onclick="openMessageModal(${messageId})"]`);
+    if (messageItem) {
+        messageItem.style.opacity = '0.5';
+        messageItem.style.pointerEvents = 'none';
+        // Aqui seria feita uma chamada para o backend para arquivar
+        showNotification('Mensagem arquivada', 'info');
+    }
+}
+
+// Abrir modal de mensagem
+function openMessageModal(messageId) {
+    const messages = {
+        1: {
+            sender: 'João Silva',
+            email: 'joao.silva@email.com',
+            subject: 'Problema com reserva do BMW X5',
+            time: 'há 2 horas',
+            priority: 'urgent',
+            content: `Olá,
+
+Acabei de fazer uma reserva para o BMW X5 para o próximo fim de semana, mas ao tentar confirmar recebi uma mensagem dizendo que o veículo não está disponível na data selecionada.
+
+Poderia verificar o que aconteceu? A reserva foi feita através do site hoje de manhã.
+
+Atenciosamente,
+João Silva`
+        },
+        2: {
+            sender: 'Maria Santos',
+            email: 'maria.santos@email.com',
+            subject: 'Informações sobre seguro adicional',
+            time: 'há 4 horas',
+            priority: 'normal',
+            content: `Olá equipe DriveNow,
+
+Estou interessada em alugar um veículo para uma viagem de férias e gostaria de saber mais sobre as opções de seguro adicional disponíveis.
+
+Quais são as coberturas oferecidas? Há diferença de preço entre elas?
+
+Obrigada,
+Maria Santos`
+        },
+        3: {
+            sender: 'Pedro Costa',
+            email: 'pedro.costa@email.com',
+            subject: 'Confirmação de reserva',
+            time: 'há 1 dia',
+            priority: 'normal',
+            content: `Olá,
+
+Gostaria de confirmar que minha reserva foi realizada com sucesso. O veículo Audi RS7 estará disponível para retirada amanhã às 14h.
+
+Obrigado pelo excelente atendimento!
+
+Pedro Costa`
+        },
+        4: {
+            sender: 'Ana Oliveira',
+            email: 'ana.oliveira@email.com',
+            subject: 'Elogio ao atendimento',
+            time: 'há 2 dias',
+            priority: 'normal',
+            content: `Olá equipe,
+
+Quero deixar meu elogio pelo atendimento excepcional que recebi hoje. O processo de locação foi muito simples e os veículos estão em excelente estado.
+
+Com certeza recomendarei a DriveNow para meus amigos e familiares.
+
+Parabéns pelo profissionalismo!
+
+Ana Oliveira`
+        }
+    };
+
+    const message = messages[messageId];
+    if (!message) return;
+
+    // Criar modal
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content contact-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-envelope"></i> ${message.subject}</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="message-details">
+                    <div class="message-meta">
+                        <div class="meta-item">
+                            <strong>De:</strong> ${message.sender} &lt;${message.email}&gt;
+                        </div>
+                        <div class="meta-item">
+                            <strong>Data:</strong> ${message.time}
+                        </div>
+                        <div class="meta-item">
+                            <strong>Prioridade:</strong>
+                            <span class="priority-badge ${message.priority}">
+                                ${message.priority === 'urgent' ? 'Urgente' : 'Normal'}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="message-content-display">
+                        <pre>${message.content}</pre>
+                    </div>
+                </div>
+
+                <div class="message-actions-modal">
+                    <button class="btn btn-primary" onclick="replyToMessage(${messageId})">
+                        <i class="fas fa-reply"></i> Responder
+                    </button>
+                    <button class="btn btn-outline" onclick="forwardMessage(${messageId})">
+                        <i class="fas fa-share"></i> Encaminhar
+                    </button>
+                    <button class="btn btn-outline" onclick="archiveMessage(${messageId})">
+                        <i class="fas fa-archive"></i> Arquivar
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Marcar como lida automaticamente ao abrir
+    markAsRead(messageId);
+
+    // Animação de entrada
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 10);
+}
+
+// Responder mensagem
+function replyToMessage(messageId) {
+    alert(`📝 Abrindo editor de resposta para a mensagem ${messageId}\n\nFuncionalidade: Editor de email com templates, anexos e histórico de conversa`);
+}
+
+// Encaminhar mensagem
+function forwardMessage(messageId) {
+    alert(`📤 Encaminhando mensagem ${messageId}\n\nFuncionalidade: Selecionar destinatários e adicionar comentários`);
+}
+
+// Usar resposta rápida
+function useQuickReply(type) {
+    const replies = {
+        confirmacao: `Olá!\n\nSua reserva foi confirmada com sucesso. Aqui estão os detalhes:\n\n- Veículo: [Modelo]\n- Data de retirada: [Data]\n- Local: [Endereço]\n\nPara alterações, entre em contato conosco.\n\nAtenciosamente,\nEquipe DriveNow`,
+        disponibilidade: `Olá!\n\nObrigado pelo interesse! Atualmente temos os seguintes veículos disponíveis:\n\n- Sedans: [Lista]\n- SUVs: [Lista]\n- Esportivos: [Lista]\n\nPara verificar disponibilidade em datas específicas, acesse nosso site ou entre em contato.\n\nAtenciosamente,\nEquipe DriveNow`,
+        documentacao: `Olá!\n\nPara realizar a locação, você precisará apresentar:\n\n✅ CNH válida (mínimo 2 anos)\n✅ Comprovante de endereço\n✅ Cartão de crédito\n✅ Documento de identidade\n\nPara locações especiais, documentação adicional pode ser solicitada.\n\nAtenciosamente,\nEquipe DriveNow`,
+        suporte: `Olá!\n\nIdentificamos um problema técnico. Nossa equipe de suporte está trabalhando para resolver.\n\nTempo estimado: 2-4 horas\nStatus: Em andamento\n\nAgradecemos sua paciência!\n\nAtenciosamente,\nEquipe DriveNow`
+    };
+
+    const reply = replies[type];
+    if (reply) {
+        // Copiar para área de transferência (simulado)
+        navigator.clipboard.writeText(reply).then(() => {
+            showNotification('Resposta rápida copiada para a área de transferência!', 'success');
+        }).catch(() => {
+            showNotification('Resposta rápida: ' + reply.substring(0, 50) + '...', 'info');
+        });
+    }
+}
+
+// Fechar modal
+function closeModal() {
+    const modal = document.querySelector('.modal-overlay');
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+}
+
+// Sistema de notificações
+function showNotification(message, type = 'info') {
+    // Remover notificações existentes
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => notification.remove());
+
+    // Criar nova notificação
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+        <span>${message}</span>
+    `;
+
+    document.body.appendChild(notification);
+
+    // Animação de entrada
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+
+    // Auto-remover após 3 segundos
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
+}

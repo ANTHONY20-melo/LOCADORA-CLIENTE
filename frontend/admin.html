@@ -23,6 +23,7 @@
                 <li><a href="#" data-target="sec-financeiro"><i class="fas fa-money-bill-wave"></i> Financeiro</a></li>
                 <li><a href="#" data-target="sec-manutencao"><i class="fas fa-wrench"></i> Manutenção</a></li>
                 <li><a href="#" data-target="sec-relatorios"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                <li><a href="#" data-target="sec-contato"><i class="fas fa-envelope"></i> Contato</a></li>
                 <li class="divider"></li>
                 <li><a href="#" data-target="sec-config"><i class="fas fa-cog"></i> Configurações</a></li>
                 <li><a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Deslogar</a></li>
@@ -1009,6 +1010,225 @@
                 <div class="save-status" id="save-status">
                     <i class="fas fa-check-circle"></i>
                     <span>Configurações salvas com sucesso!</span>
+                </div>
+            </div>
+
+            <!-- CONTATO -->
+            <div id="sec-contato" class="admin-section" style="display: none;">
+                <div class="section-header">
+                    <h3>Centro de Contato</h3>
+                    <p class="section-subtitle">Gerencie mensagens, suporte e comunicações</p>
+                </div>
+
+                <!-- Cards de Resumo de Contato -->
+                <div class="contact-stats">
+                    <div class="stat-card info">
+                        <div class="stat-info">
+                            <h3>Mensagens Não Lidas</h3>
+                            <p class="number">8</p>
+                            <span class="change warning">+3 hoje</span>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-envelope"></i></div>
+                    </div>
+                    <div class="stat-card success">
+                        <div class="stat-info">
+                            <h3>Respostas Enviadas</h3>
+                            <p class="number">24</p>
+                            <span class="change positive">Esta semana</span>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-reply"></i></div>
+                    </div>
+                    <div class="stat-card warning">
+                        <div class="stat-info">
+                            <h3>Tempo Médio Resposta</h3>
+                            <p class="number">2.5h</p>
+                            <span class="change neutral">Meta: < 4h</span>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    </div>
+                    <div class="stat-card primary">
+                        <div class="stat-info">
+                            <h3>Satisfação</h3>
+                            <p class="number">4.8</p>
+                            <span class="change positive">⭐⭐⭐⭐⭐</span>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-star"></i></div>
+                    </div>
+                </div>
+
+                <!-- Área Principal de Contato -->
+                <div class="contact-main">
+                    <!-- Lista de Mensagens -->
+                    <div class="contact-messages">
+                        <div class="messages-header">
+                            <h4>Mensagens Recentes</h4>
+                            <div class="messages-filters">
+                                <select class="filter-select" id="message-filter">
+                                    <option value="all">Todas</option>
+                                    <option value="unread">Não lidas</option>
+                                    <option value="read">Lidas</option>
+                                    <option value="urgent">Urgentes</option>
+                                </select>
+                                <button class="btn btn-outline" onclick="markAllAsRead()">
+                                    <i class="fas fa-check-double"></i> Marcar todas como lidas
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="messages-list">
+                            <div class="message-item unread" onclick="openMessageModal(1)">
+                                <div class="message-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-header">
+                                        <span class="message-sender">João Silva</span>
+                                        <span class="message-time">há 2 horas</span>
+                                        <span class="message-priority urgent">Urgente</span>
+                                    </div>
+                                    <div class="message-preview">Problema com reserva do BMW X5 - veículo não disponível na data...</div>
+                                </div>
+                                <div class="message-actions">
+                                    <button class="btn-icon" onclick="markAsRead(1)" title="Marcar como lida">
+                                        <i class="fas fa-envelope-open"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="message-item unread" onclick="openMessageModal(2)">
+                                <div class="message-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-header">
+                                        <span class="message-sender">Maria Santos</span>
+                                        <span class="message-time">há 4 horas</span>
+                                        <span class="message-priority normal">Normal</span>
+                                    </div>
+                                    <div class="message-preview">Solicitação de informações sobre seguro adicional para viagem...</div>
+                                </div>
+                                <div class="message-actions">
+                                    <button class="btn-icon" onclick="markAsRead(2)" title="Marcar como lida">
+                                        <i class="fas fa-envelope-open"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="message-item read" onclick="openMessageModal(3)">
+                                <div class="message-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-header">
+                                        <span class="message-sender">Pedro Costa</span>
+                                        <span class="message-time">há 1 dia</span>
+                                        <span class="message-priority normal">Normal</span>
+                                    </div>
+                                    <div class="message-preview">Confirmação de reserva realizada com sucesso. Obrigado pelo...</div>
+                                </div>
+                                <div class="message-actions">
+                                    <button class="btn-icon" onclick="archiveMessage(3)" title="Arquivar">
+                                        <i class="fas fa-archive"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="message-item read" onclick="openMessageModal(4)">
+                                <div class="message-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-header">
+                                        <span class="message-sender">Ana Oliveira</span>
+                                        <span class="message-time">há 2 dias</span>
+                                        <span class="message-priority normal">Normal</span>
+                                    </div>
+                                    <div class="message-preview">Elogio pelo atendimento e qualidade dos veículos. Recomendarei...</div>
+                                </div>
+                                <div class="message-actions">
+                                    <button class="btn-icon" onclick="archiveMessage(4)" title="Arquivar">
+                                        <i class="fas fa-archive"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Painel Lateral de Informações -->
+                    <div class="contact-sidebar">
+                        <!-- Informações de Contato -->
+                        <div class="contact-info-card">
+                            <h4><i class="fas fa-info-circle"></i> Informações de Contato</h4>
+                            <div class="contact-details">
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <div>
+                                        <strong>Telefone</strong>
+                                        <p>(11) 9999-8888</p>
+                                    </div>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <div>
+                                        <strong>Email</strong>
+                                        <p>contato@drivenow.com.br</p>
+                                    </div>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-clock"></i>
+                                    <div>
+                                        <strong>Horário de Atendimento</strong>
+                                        <p>Seg-Sex: 8h às 18h<br>Sáb: 8h às 12h</p>
+                                    </div>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div>
+                                        <strong>Localização</strong>
+                                        <p>Av. Paulista, 1000<br>São Paulo - SP</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Respostas Rápidas -->
+                        <div class="quick-replies-card">
+                            <h4><i class="fas fa-reply"></i> Respostas Rápidas</h4>
+                            <div class="quick-replies">
+                                <button class="quick-reply-btn" onclick="useQuickReply('confirmacao')">
+                                    <i class="fas fa-check"></i> Confirmação de Reserva
+                                </button>
+                                <button class="quick-reply-btn" onclick="useQuickReply('disponibilidade')">
+                                    <i class="fas fa-car"></i> Verificar Disponibilidade
+                                </button>
+                                <button class="quick-reply-btn" onclick="useQuickReply('documentacao')">
+                                    <i class="fas fa-file-alt"></i> Documentação Necessária
+                                </button>
+                                <button class="quick-reply-btn" onclick="useQuickReply('suporte')">
+                                    <i class="fas fa-headset"></i> Suporte Técnico
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Status do Sistema -->
+                        <div class="system-status-card">
+                            <h4><i class="fas fa-server"></i> Status do Sistema</h4>
+                            <div class="status-indicators">
+                                <div class="status-item online">
+                                    <span class="status-dot"></span>
+                                    <span>Sistema Online</span>
+                                </div>
+                                <div class="status-item online">
+                                    <span class="status-dot"></span>
+                                    <span>Email Funcionando</span>
+                                </div>
+                                <div class="status-item online">
+                                    <span class="status-dot"></span>
+                                    <span>Base de Dados OK</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>

@@ -3,29 +3,64 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 1. Controle do Menu Mobile ---
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
+    const header = document.querySelector('header');
     
     if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', () => {
+        // Toggle menu
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
             navLinks.classList.toggle('active');
             
             const icon = menuToggle.querySelector('i');
             if (navLinks.classList.contains('active')) {
                 icon.classList.remove('fa-bars');
                 icon.classList.add('fa-times');
+                // Impede scroll do body quando menu está aberto
+                document.body.style.overflow = 'hidden';
             } else {
                 icon.classList.remove('fa-times');
                 icon.classList.add('fa-bars');
+                document.body.style.overflow = '';
             }
         });
 
+        // Fecha menu ao clicar nos links
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
-                if(menuToggle.querySelector('i')) {
-                    menuToggle.querySelector('i').classList.remove('fa-times');
-                    menuToggle.querySelector('i').classList.add('fa-bars');
+                const icon = menuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
                 }
+                document.body.style.overflow = '';
             });
+        });
+
+        // Fecha menu ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!header.contains(e.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                const icon = menuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Fecha menu no resize para desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                const icon = menuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+                document.body.style.overflow = '';
+            }
         });
     }
 
@@ -305,3 +340,207 @@ function logout() {
         window.location.reload(); // Recarrega a página para atualizar o Header
     }
 }
+
+// === 10. FUNCIONALIDADES DA SEÇÃO CONTATO ===
+
+// Formulário de Contato
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+
+            // Desabilitar botão e mostrar loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
+            // Simular envio (substitua por chamada real para API)
+            try {
+                await simulateContactSubmission(new FormData(contactForm));
+
+                // Sucesso
+                formStatus.className = 'form-status success';
+                formStatus.innerHTML = '<i class="fas fa-check-circle"></i> Mensagem enviada com sucesso! Entraremos em contato em breve.';
+                formStatus.style.display = 'block';
+                contactForm.reset();
+
+                // Scroll para o status
+                formStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            } catch (error) {
+                // Erro
+                formStatus.className = 'form-status error';
+                formStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Erro ao enviar mensagem. Tente novamente.';
+                formStatus.style.display = 'block';
+            }
+
+            // Reabilitar botão
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+
+            // Esconder status após 5 segundos
+            setTimeout(() => {
+                formStatus.style.display = 'none';
+            }, 5000);
+        });
+    }
+
+    // FAQ Interativo
+    initializeFAQ();
+
+    // Máscara para telefone
+    initializePhoneMask();
+});
+
+// Simulação de envio do formulário de contato
+async function simulateContactSubmission(formData) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            // Simular 90% de sucesso, 10% de erro
+            if (Math.random() > 0.1) {
+                resolve({ success: true });
+            } else {
+                reject(new Error('Falha na conexão'));
+            }
+        }, 2000);
+    });
+}
+
+// FAQ Interativo
+function initializeFAQ() {
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+
+        question.addEventListener('click', () => {
+            // Fechar outras FAQs abertas
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    const otherAnswer = otherItem.querySelector('.faq-answer');
+                    otherAnswer.style.display = 'none';
+                    otherItem.classList.remove('active');
+                }
+            });
+
+            // Toggle da FAQ atual
+            const isOpen = answer.style.display === 'block';
+            answer.style.display = isOpen ? 'none' : 'block';
+            item.classList.toggle('active');
+
+            // Animação suave
+            if (!isOpen) {
+                answer.style.animation = 'slideDown 0.3s ease';
+            }
+        });
+    });
+}
+
+// Máscara para telefone brasileiro
+function initializePhoneMask() {
+    const phoneInput = document.getElementById('contact-phone');
+
+    if (phoneInput) {
+        phoneInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+
+            if (value.length <= 11) {
+                if (value.length <= 2) {
+                    value = value;
+                } else if (value.length <= 6) {
+                    value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+                } else if (value.length <= 10) {
+                    value = `(${value.slice(0, 2)}) ${value.slice(2, 6)}-${value.slice(6)}`;
+                } else {
+                    value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
+                }
+            }
+
+            e.target.value = value;
+        });
+    }
+}
+
+// Validação em tempo real dos campos
+document.addEventListener('DOMContentLoaded', () => {
+    const formGroups = document.querySelectorAll('.contact-form .form-group');
+
+    formGroups.forEach(group => {
+        const input = group.querySelector('input, select, textarea');
+        const label = group.querySelector('label');
+
+        if (input && label) {
+            input.addEventListener('focus', () => {
+                label.style.color = 'var(--primary-color)';
+            });
+
+            input.addEventListener('blur', () => {
+                label.style.color = 'var(--text-dark)';
+            });
+
+            // Validação visual
+            input.addEventListener('input', () => {
+                if (input.checkValidity()) {
+                    input.style.borderColor = '#10b981';
+                } else {
+                    input.style.borderColor = '#ef4444';
+                }
+            });
+        }
+    });
+});
+
+// Animações de entrada para elementos da seção contato
+document.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observar elementos da seção contato
+    document.querySelectorAll('.info-card, .contact-form-container, .map-container, .faq-item').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+});
+
+// Animação CSS para FAQ
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        to {
+            opacity: 1;
+            max-height: 200px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+    }
+
+    .faq-item.active .faq-question {
+        background: linear-gradient(135deg, #004494, #e55a00);
+    }
+`;
+document.head.appendChild(style);
