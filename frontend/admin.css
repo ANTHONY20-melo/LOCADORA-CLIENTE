@@ -223,6 +223,12 @@
     height: 150px;
     margin: 0 auto 20px;
     position: relative;
+    cursor: help;
+    transition: var(--transition);
+}
+
+.pie-chart:hover {
+    transform: scale(1.05);
 }
 
 .pie-segment {
@@ -399,6 +405,9 @@
     padding: 20px 30px;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .header-left {
@@ -670,6 +679,7 @@
 .financial-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
+    cursor: help;
 }
 
 .financial-card h4 {

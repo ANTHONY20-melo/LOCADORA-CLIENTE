@@ -3,183 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin | DriveNow</title>
+    <title>DriveNow | Locadora de Carros</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css"> 
-    <link rel="stylesheet" href="admin.css"> 
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="admin-body">
+<body>
 
-    <div class="admin-container">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <a href="index.html" class="logo">Drive<span>Now</span></a>
+    <header id="header">
+        <div class="container header-container">
+            <a href="#" class="logo">Drive<span>Now</span></a>
+            <nav class="navbar">
+                <ul class="nav-links">
+                    <li><a href="#home" class="active">Início</a></li>
+                    <li><a href="#frota">Nossa Frota</a></li>
+                    <li><a href="#vantagens">Vantagens</a></li>
+                    <li><a href="#planos">Planos</a></li> <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions" id="auth-container">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="#planos" class="btn btn-primary">Assinar Planos</a>
+                <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>Alugue o carro perfeito para a sua próxima <span>aventura</span>.</h1>
+                <p>Modelos premium, SUVs espaçosos e econômicos para o seu dia a dia. Rápido, fácil e sem burocracia.</p>
             </div>
             
-            <ul class="sidebar-menu">
-                <li class="active"><a href="#" class="menu-link" data-target="sec-dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="#" class="menu-link" data-target="sec-veiculos"><i class="fas fa-car"></i> Veículos</a></li>
-                <li><a href="#" class="menu-link" data-target="sec-locatarios"><i class="fas fa-user"></i> Locatários</a></li>
-                <li><a href="#" class="menu-link" data-target="sec-locacoes"><i class="fas fa-clipboard-list"></i> Locações</a></li>
-                <li><a href="#" class="menu-link" data-target="sec-contratos"><i class="fas fa-file-contract"></i> Contratos</a></li>
-                <li><a href="#" class="menu-link" data-target="sec-financeiro"><i class="fas fa-money-bill-wave"></i> Financeiro</a></li>
-                <li><a href="#" class="menu-link" data-target="sec-manutencao"><i class="fas fa-wrench"></i> Manutenção</a></li>
-                <li><a href="#" class="menu-link" data-target="sec-relatorios"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
-                <li class="divider"></li>
-                <li><a href="#" class="menu-link" data-target="sec-config"><i class="fas fa-cog"></i> Configurações</a></li>
-                <li><a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Deslogar</a></li>
-            </ul>
-        </aside>
-
-        <main class="main-content">
-            <header class="top-header">
-                <div class="header-title">
-                    <h2 id="page-title">Dashboard</h2>
-                </div>
-                <div class="header-user">
-                    <span id="admin-name">Olá, Admin</span>
-                    <div class="avatar"><i class="fas fa-user-shield"></i></div>
-                </div>
-            </header>
-
-            <div id="sec-dashboard" class="admin-section active">
-                <div class="dashboard-cards">
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3>Reservas Ativas</h3>
-                            <p class="number">12</p>
-                        </div>
-                        <div class="stat-icon"><i class="fas fa-key"></i></div>
+            <div class="booking-form-container">
+                <form id="booking-form" class="booking-form">
+                    <div class="form-group">
+                        <label><i class="fas fa-map-marker-alt"></i> Local de Retirada</label>
+                        <input type="text" placeholder="Cidade, Aeroporto ou Loja" required>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3>Veículos Disponíveis</h3>
-                            <p class="number">24</p>
-                        </div>
-                        <div class="stat-icon" style="background-color: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fas fa-car-side"></i></div>
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-alt"></i> Data de Retirada</label>
+                        <input type="date" required>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3>Total de Clientes</h3>
-                            <p class="number">156</p>
-                        </div>
-                        <div class="stat-icon" style="background-color: rgba(245, 158, 11, 0.1); color: #f59e0b;"><i class="fas fa-users"></i></div>
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-check"></i> Data de Devolução</label>
+                        <input type="date" required>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3>Faturamento (Mês)</h3>
-                            <p class="number">R$ 18.450</p>
-                        </div>
-                        <div class="stat-icon" style="background-color: rgba(139, 92, 246, 0.1); color: #8b5cf6;"><i class="fas fa-dollar-sign"></i></div>
+                    <button type="submit" class="btn btn-primary btn-block">Buscar Carros</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="frota" class="fleet section-padding">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossa <span>Frota</span></h2>
+                <p>Escolha o veículo ideal para a sua necessidade.</p>
+            </div>
+            
+            <div id="fleet-container" class="grid-cards">
+                </div>
+        </div>
+    </section>
+
+    <section id="vantagens" class="features section-padding bg-light">
+        <div class="container">
+            <div class="section-title">
+                <h2>Por que escolher a <span>DriveNow?</span></h2>
+                <p>Oferecemos o melhor serviço para garantir uma viagem tranquila e segura.</p>
+            </div>
+            
+            <div class="grid-features">
+                <div class="feature-box">
+                    <div class="feature-icon"><i class="fas fa-tags"></i></div>
+                    <h3>Melhor Preço Garantido</h3>
+                    <p>Encontrou um preço menor? Nós cobrimos a oferta para você economizar sempre.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                    <h3>Suporte 24/7</h3>
+                    <p>Nossa equipe está pronta para te ajudar a qualquer hora do dia ou da noite.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Seguro Completo</h3>
+                    <p>Viaje sem preocupações. Todos os nossos veículos possuem seguro total.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="planos" class="pricing section-padding">
+        <div class="container">
+            <div class="section-title">
+                <h2>Escolha seu <span>Plano</span></h2>
+                <p>Assine e tenha benefícios exclusivos, diárias mais baratas e prioridade na reserva.</p>
+                
+                <div class="pricing-toggle">
+                    <span class="active" id="text-monthly">Mensal</span>
+                    <label class="switch">
+                        <input type="checkbox" id="toggle-pricing">
+                        <span class="slider round"></span>
+                    </label>
+                    <span id="text-annual">Anual (2 meses grátis)</span>
+                </div>
+            </div>
+            
+            <div class="grid-pricing">
+                <div class="pricing-card">
+                    <h3>Plus</h3>
+                    <div class="price">
+                        <span class="currency">R$</span>
+                        <span class="amount" data-monthly="50" data-annual="500">50</span>
+                        <span class="period">/mês</span>
                     </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> 5% de desconto nas diárias</li>
+                        <li><i class="fas fa-check"></i> Condutor adicional grátis</li>
+                        <li><i class="fas fa-check"></i> Lavagem inclusa na devolução</li>
+                        <li class="disabled"><i class="fas fa-times"></i> Upgrade de categoria grátis</li>
+                    </ul>
+                    <button class="btn btn-outline btn-block" onclick="checkLoginAndSubscribe('Plus')">Assinar Plus</button>
                 </div>
 
-                <div class="content-section">
-                    <div class="section-header">
-                        <h3>Últimas Locações</h3>
-                        <button class="btn btn-primary" style="padding: 5px 15px; font-size: 0.9rem;">Ver Todas</button>
+                <div class="pricing-card popular">
+                    <div class="badge">Mais Jovem</div>
+                    <h3>Pro</h3>
+                    <div class="price">
+                        <span class="currency">R$</span>
+                        <span class="amount" data-monthly="150" data-annual="1500">150</span>
+                        <span class="period">/mês</span>
                     </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Veículo</th>
-                                <th>Locatário</th>
-                                <th>Data Retirada</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#001</td>
-                                <td>Audi RS7</td>
-                                <td>joao@email.com</td>
-                                <td>30/03/2026</td>
-                                <td><span class="status active">Em Andamento</span></td>
-                                <td><button class="btn-action"><i class="fas fa-edit"></i></button></td>
-                            </tr>
-                            <tr>
-                                <td>#002</td>
-                                <td>Range Rover Velar</td>
-                                <td>maria@email.com</td>
-                                <td>28/03/2026</td>
-                                <td><span class="status completed">Concluído</span></td>
-                                <td><button class="btn-action"><i class="fas fa-edit"></i></button></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> 15% de desconto nas diárias</li>
+                        <li><i class="fas fa-check"></i> Condutor adicional grátis</li>
+                        <li><i class="fas fa-check"></i> Lavagem inclusa na devolução</li>
+                        <li><i class="fas fa-check"></i> 1 Upgrade de categoria/mês</li>
+                    </ul>
+                    <button class="btn btn-primary btn-block" onclick="checkLoginAndSubscribe('Pro')">Assinar Pro</button>
                 </div>
-            </div>
 
-            <div id="sec-veiculos" class="admin-section" style="display: none;">
-                <div class="content-section">
-                    <div class="section-header">
-                        <h3>Gerenciamento de Frota</h3>
-                        <button class="btn btn-primary"><i class="fas fa-plus"></i> Novo Veículo</button>
+                <div class="pricing-card">
+                    <h3>Max</h3>
+                    <div class="price">
+                        <span class="currency">R$</span>
+                        <span class="amount" data-monthly="300" data-annual="3000">300</span>
+                        <span class="period">/mês</span>
                     </div>
-                    <p>Aqui ficará a lista completa de veículos puxada do banco de dados, com opções para editar, excluir ou marcar como indisponível.</p>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> 30% de desconto nas diárias</li>
+                        <li><i class="fas fa-check"></i> Condutores ilimitados</li>
+                        <li><i class="fas fa-check"></i> Entrega do carro em casa</li>
+                        <li><i class="fas fa-check"></i> Upgrades ilimitados</li>
+                    </ul>
+                    <button class="btn btn-outline btn-block" onclick="checkLoginAndSubscribe('Max')">Assinar Max</button>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div id="sec-locatarios" class="admin-section" style="display: none;">
-                <div class="content-section">
-                    <div class="section-header">
-                        <h3>Base de Clientes</h3>
-                        <div class="search-bar">
-                            <input type="text" placeholder="Buscar cliente..." style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
-                        </div>
-                    </div>
-                    <p>Lista de usuários cadastrados no sistema, histórico de locações e documentos anexados.</p>
+    <footer id="contato">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <a href="#" class="logo">Drive<span>Now</span></a>
+                <p>A sua locadora de carros de confiança. Simplificando a sua mobilidade com transparência e eficiência.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
                 </div>
             </div>
-
-            <div id="sec-locacoes" class="admin-section" style="display: none;">
-                <div class="content-section">
-                    <h3>Acompanhamento de Locações</h3>
-                    <p>Controle de retiradas e devoluções do dia.</p>
-                </div>
+            <div class="footer-col">
+                <h4>Links Rápidos</h4>
+                <ul>
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#frota">Nossa Frota</a></li>
+                    <li><a href="#vantagens">Vantagens</a></li>
+                    <li><a href="#planos">Planos</a></li>
+                </ul>
             </div>
-
-            <div id="sec-contratos" class="admin-section" style="display: none;">
-                <div class="content-section">
-                    <h3>Contratos e Planos de Assinatura</h3>
-                    <p>Gerencie quem é Plus, Pro ou Max e gere documentos em PDF.</p>
-                </div>
+            <div class="footer-col">
+                <h4>Contato</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-map-marker-alt"></i> Av. Principal, 1000 - Centro</li>
+                    <li><i class="fas fa-phone"></i> 0800 123 4567</li>
+                    <li><i class="fas fa-envelope"></i> contato@drivenow.com.br</li>
+                </ul>
             </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 DriveNow. Todos os direitos reservados.</p>
+        </div>
+    </footer>
 
-            <div id="sec-financeiro" class="admin-section" style="display: none;">
-                <div class="content-section">
-                    <h3>Controle Financeiro</h3>
-                    <p>Pagamentos recebidos, pendentes, estornos e integração com gateway de pagamento.</p>
-                </div>
-            </div>
-
-            <div id="sec-manutencao" class="admin-section" style="display: none;">
-                <div class="content-section">
-                    <h3>Manutenção de Veículos</h3>
-                    <p>Controle de troca de óleo, vistorias e carros na oficina.</p>
-                </div>
-            </div>
-
-            <div id="sec-relatorios" class="admin-section" style="display: none;">
-                <div class="content-section">
-                    <h3>Relatórios Gerenciais</h3>
-                    <p>Gráficos de lucro, veículos mais alugados e métricas de desempenho.</p>
-                </div>
-            </div>
-
-            <div id="sec-config" class="admin-section" style="display: none;">
-                <div class="content-section">
-                    <h3>Configurações do Sistema</h3>
-                    <p>Alterar senhas de acesso, taxas da locadora e informações de contato.</p>
-                </div>
-            </div>
-
-        </main>
-    </div>
-
-    <script src="admin.js"></script>
+    <script src="../frontend/script.js"></script>
 </body>
 </html>

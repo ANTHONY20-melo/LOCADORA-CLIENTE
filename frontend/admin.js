@@ -114,7 +114,7 @@ function adminLogout() {
     if(confirm('Deseja realmente sair do painel?')) {
         localStorage.removeItem('driveNowToken');
         localStorage.removeItem('driveNowUser');
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
     }
 }
 
