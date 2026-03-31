@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fleetContainer.innerHTML = '<p style="text-align:center; width:100%;">Carregando veículos...</p>';
 
             // Usa URL relativa para evitar problemas de CORS e ambientes hospedados em subdomínios
-            const response = await fetch('/api/cars');
+            const response = await fetch('https://drivenow-backend-84d4.onrender.com/api/cars');
             const cars = await response.json();
 
             // fallback se endpoint não devolver array
@@ -293,7 +293,7 @@ async function makeReservation(carId, carName) {
     if (!confirmar) return;
 
     try {
-        const response = await fetch('http://localhost:3000/api/reserve', {
+        const response = await fetch('https://drivenow-backend-84d4.onrender.com/api/reserve', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
