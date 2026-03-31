@@ -1501,6 +1501,111 @@ input:checked + .slider:before {
     margin: 0;
 }
 
+/* Estilo simples e moderno para a nova seção de contato */
+.contact-simple-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.contact-details-card,
+.contact-form-card {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 86, 179, 0.08);
+    border: 1px solid rgba(0, 86, 179, 0.12);
+    padding: 30px;
+}
+
+.contact-details-card h3,
+.contact-form-card h3 {
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.contact-list li {
+    display: flex;
+    gap: 10px;
+    color: var(--text-light);
+    align-items: center;
+}
+
+.contact-list i {
+    color: var(--primary-color);
+}
+
+.contact-socials {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.contact-socials a {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.contact-socials a:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.contact-form .form-group {
+    margin-bottom: 15px;
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+}
+
+.contact-form button {
+    margin-top: 5px;
+}
+
+@media (max-width: 992px) {
+    .contact-simple-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Responsividade */
 @media (max-width: 992px) {
     .contact-container {
