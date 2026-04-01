@@ -1,14 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-   // --- 1. Controle do Menu Mobile (Corrigido com Delegação de Eventos) ---
+    // --- 1. Controle do Menu Mobile (Corrigido com Delegação de Eventos) ---
     // Usamos o 'document' para ouvir os cliques, assim o botão funciona mesmo se o HTML for recriado pelo Login.
-    
     document.addEventListener('click', (e) => {
         const menuToggleBtn = e.target.closest('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
         const header = document.querySelector('header');
 
-        // 1. Ação de Abrir/Fechar ao clicar no botão de Menu (Hambúrguer)
+        // Ação de Abrir/Fechar ao clicar no botão de Menu (Hambúrguer)
         if (menuToggleBtn && navLinks) {
             e.stopPropagation(); // Evita conflito com o clique fora do menu
             navLinks.classList.toggle('active');
@@ -25,10 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Libera scroll do body
                 document.body.style.overflow = '';
             }
-            return; // Sai da função para não executar os comandos abaixo juntos
+            return; // Sai da função para não executar os comandos abaixo
         }
 
-        // 2. Fecha menu ao clicar em um dos links internos
+        // Fecha menu ao clicar em um dos links internos
         if (e.target.closest('.nav-links a') && navLinks && navLinks.classList.contains('active')) {
             navLinks.classList.remove('active');
             const toggleIcon = document.querySelector('.menu-toggle i');
@@ -39,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.style.overflow = '';
         }
 
-        // 3. Fecha menu ao clicar fora dele (qualquer lugar da tela que não seja o header)
+        // Fecha menu ao clicar fora dele
         if (navLinks && navLinks.classList.contains('active') && header && !header.contains(e.target)) {
             navLinks.classList.remove('active');
             const toggleIcon = document.querySelector('.menu-toggle i');
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 4. Fecha menu caso o usuário rotacione o celular ou aumente a tela (Resize)
+    // Fecha menu caso o usuário rotacione o celular ou aumente a tela (Resize)
     window.addEventListener('resize', () => {
         const navLinks = document.querySelector('.nav-links');
         if (window.innerWidth > 768 && navLinks && navLinks.classList.contains('active')) {
@@ -129,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fleetContainer.innerHTML = '<p style="text-align:center; width:100%;">Carregando veículos...</p>';
 
             const apiUrls = [
-                'http://localhost:3000/api/cars'
+                'https://drivenow-backend-84d4.onrender.com/api/cars'
             ];
 
             let cars = null;
@@ -157,12 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!Array.isArray(cars)) {
                 throw new Error('Resposta do catálogo inválida ou indisponível');
-            }
-
-            // fallback se endpoint não devolver array
-            if (cars.length === 0) {
-                fleetContainer.innerHTML = '<p style="text-align:center; width:100%;">Nenhum veículo disponível no momento.</p>';
-                return;
             }
 
             fleetContainer.innerHTML = '';
@@ -219,8 +212,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     transmission: 'Automático',
                     ac: true,
                     image_url: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1200'
-                }
-                ,{
+                },
+                {
                     id: 103,
                     name: 'BMW 320i',
                     price: 320.00,
@@ -229,7 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     transmission: 'Automático',
                     ac: true,
                     image_url: 'https://images.unsplash.com/photo-1519643381401-22c77e60520e?auto=format&fit=crop&q=80&w=1200'
-                },{
+                },
+                {
                     id: 104,
                     name: 'Toyota Corolla',
                     price: 220.00,
@@ -238,7 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     transmission: 'Automático',
                     ac: true,
                     image_url: 'https://images.unsplash.com/photo-1563720223624-c83bcec2b7c8?auto=format&fit=crop&q=80&w=1200'
-                },{
+                },
+                {
                     id: 105,
                     name: 'Jeep Renegade',
                     price: 280.00,
@@ -319,9 +314,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (authContainer) {
         if (token && userStr) {
-            // Se o usuário está logado, remove botões de Login/Cadastro e exibe "Olá, Nome" e "Sair"
             const user = JSON.parse(userStr);
-            const userName = user.email.split('@')[0]; // Pega parte antes do @
+            const userName = user.email.split('@')[0]; 
             
             authContainer.innerHTML = `
                 <div style="display: flex; align-items: center; gap: 15px;">
@@ -334,7 +328,96 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
     }
+
+    // === 10. FUNCIONALIDADES DA SEÇÃO CONTATO ===
+    const contactFormForm = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+
+    if (contactFormForm && formStatus) {
+        contactFormForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = contactFormForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
+            try {
+                await simulateContactSubmission(new FormData(contactFormForm));
+                formStatus.className = 'form-status success';
+                formStatus.innerHTML = '<i class="fas fa-check-circle"></i> Mensagem enviada com sucesso! Entraremos em contato em breve.';
+                formStatus.style.display = 'block';
+                contactFormForm.reset();
+                formStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } catch (error) {
+                formStatus.className = 'form-status error';
+                formStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Erro ao enviar mensagem. Tente novamente.';
+                formStatus.style.display = 'block';
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+
+            setTimeout(() => {
+                formStatus.style.display = 'none';
+            }, 5000);
+        });
+    }
+
+    // Inicia FAQ e Máscara
+    initializeFAQ();
+    initializePhoneMask();
+
+    // Validação em tempo real dos campos de contato
+    const formGroups = document.querySelectorAll('.contact-form .form-group');
+    formGroups.forEach(group => {
+        const input = group.querySelector('input, select, textarea');
+        const label = group.querySelector('label');
+
+        if (input && label) {
+            input.addEventListener('focus', () => {
+                label.style.color = 'var(--primary-color)';
+            });
+
+            input.addEventListener('blur', () => {
+                label.style.color = 'var(--text-dark)';
+            });
+
+            input.addEventListener('input', () => {
+                if (input.checkValidity()) {
+                    input.style.borderColor = '#10b981';
+                } else {
+                    input.style.borderColor = '#ef4444';
+                }
+            });
+        }
+    });
+
+    // Animações de entrada para elementos da seção contato
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.info-card, .contact-form-container, .map-container, .faq-item').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
 });
+
+// --- FUNÇÕES FORA DO DOMContentLoaded ---
 
 // --- 7. Lógica de Reserva ---
 async function makeReservation(carId, carName) {
@@ -385,7 +468,6 @@ function checkLoginAndSubscribe(planName) {
         window.location.href = 'login.html'; 
     } else {
         alert('🎉 Redirecionando para a tela de pagamento do Plano ' + planName + '!');
-        // Aqui você chamaria a rota de pagamento ou criaria a assinatura no BD
     }
 }
 
@@ -394,71 +476,14 @@ function logout() {
     if(confirm('Tem certeza que deseja sair?')) {
         localStorage.removeItem('driveNowToken');
         localStorage.removeItem('driveNowUser');
-        window.location.reload(); // Recarrega a página para atualizar o Header
+        window.location.reload(); 
     }
 }
-
-// === 10. FUNCIONALIDADES DA SEÇÃO CONTATO ===
-
-// Formulário de Contato
-document.addEventListener('DOMContentLoaded', () => {
-    const contactForm = document.getElementById('contact-form');
-    const formStatus = document.getElementById('form-status');
-
-    if (contactForm) {
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const submitBtn = contactForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-
-            // Desabilitar botão e mostrar loading
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-
-            // Simular envio (substitua por chamada real para API)
-            try {
-                await simulateContactSubmission(new FormData(contactForm));
-
-                // Sucesso
-                formStatus.className = 'form-status success';
-                formStatus.innerHTML = '<i class="fas fa-check-circle"></i> Mensagem enviada com sucesso! Entraremos em contato em breve.';
-                formStatus.style.display = 'block';
-                contactForm.reset();
-
-                // Scroll para o status
-                formStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-            } catch (error) {
-                // Erro
-                formStatus.className = 'form-status error';
-                formStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Erro ao enviar mensagem. Tente novamente.';
-                formStatus.style.display = 'block';
-            }
-
-            // Reabilitar botão
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
-
-            // Esconder status após 5 segundos
-            setTimeout(() => {
-                formStatus.style.display = 'none';
-            }, 5000);
-        });
-    }
-
-    // FAQ Interativo
-    initializeFAQ();
-
-    // Máscara para telefone
-    initializePhoneMask();
-});
 
 // Simulação de envio do formulário de contato
 async function simulateContactSubmission(formData) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            // Simular 90% de sucesso, 10% de erro
             if (Math.random() > 0.1) {
                 resolve({ success: true });
             } else {
@@ -476,26 +501,25 @@ function initializeFAQ() {
         const question = item.querySelector('.faq-question');
         const answer = item.querySelector('.faq-answer');
 
-        question.addEventListener('click', () => {
-            // Fechar outras FAQs abertas
-            faqItems.forEach(otherItem => {
-                if (otherItem !== item) {
-                    const otherAnswer = otherItem.querySelector('.faq-answer');
-                    otherAnswer.style.display = 'none';
-                    otherItem.classList.remove('active');
+        if(question && answer) {
+            question.addEventListener('click', () => {
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        const otherAnswer = otherItem.querySelector('.faq-answer');
+                        if(otherAnswer) otherAnswer.style.display = 'none';
+                        otherItem.classList.remove('active');
+                    }
+                });
+
+                const isOpen = answer.style.display === 'block';
+                answer.style.display = isOpen ? 'none' : 'block';
+                item.classList.toggle('active');
+
+                if (!isOpen) {
+                    answer.style.animation = 'slideDown 0.3s ease';
                 }
             });
-
-            // Toggle da FAQ atual
-            const isOpen = answer.style.display === 'block';
-            answer.style.display = isOpen ? 'none' : 'block';
-            item.classList.toggle('active');
-
-            // Animação suave
-            if (!isOpen) {
-                answer.style.animation = 'slideDown 0.3s ease';
-            }
-        });
+        }
     });
 }
 
@@ -523,60 +547,6 @@ function initializePhoneMask() {
         });
     }
 }
-
-// Validação em tempo real dos campos
-document.addEventListener('DOMContentLoaded', () => {
-    const formGroups = document.querySelectorAll('.contact-form .form-group');
-
-    formGroups.forEach(group => {
-        const input = group.querySelector('input, select, textarea');
-        const label = group.querySelector('label');
-
-        if (input && label) {
-            input.addEventListener('focus', () => {
-                label.style.color = 'var(--primary-color)';
-            });
-
-            input.addEventListener('blur', () => {
-                label.style.color = 'var(--text-dark)';
-            });
-
-            // Validação visual
-            input.addEventListener('input', () => {
-                if (input.checkValidity()) {
-                    input.style.borderColor = '#10b981';
-                } else {
-                    input.style.borderColor = '#ef4444';
-                }
-            });
-        }
-    });
-});
-
-// Animações de entrada para elementos da seção contato
-document.addEventListener('DOMContentLoaded', () => {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    // Observar elementos da seção contato
-    document.querySelectorAll('.info-card, .contact-form-container, .map-container, .faq-item').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
-});
 
 // Animação CSS para FAQ
 const style = document.createElement('style');
