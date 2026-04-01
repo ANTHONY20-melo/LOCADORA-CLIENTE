@@ -1818,3 +1818,40 @@ input:checked + .slider:before {
         padding: 15px;
     }
 }
+
+/* =========================================
+   CORREÇÕES PARA O MOBILE
+========================================= */
+
+/* Garante que nenhum input passe do tamanho da tela */
+.form-group input {
+    width: 100%;
+    box-sizing: border-box; 
+}
+
+@media (max-width: 768px) {
+    /* Ajusta a caixa branca do formulário */
+    .booking-form-container {
+        padding: 20px;
+        width: 95%; /* Deixa uma margem lateral respiro */
+        margin: 0 auto; /* Centraliza na tela */
+        box-sizing: border-box;
+    }
+
+    /* Coloca os campos um embaixo do outro certinho */
+    .booking-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+    }
+    
+    /* Força o botão do menu hambúrguer a aparecer e ser clicável */
+    .menu-toggle {
+        display: block !important; 
+        position: relative;
+        z-index: 9999; /* Coloca ele na camada mais alta da tela */
+        padding: 10px;
+        cursor: pointer;
+    }
+}

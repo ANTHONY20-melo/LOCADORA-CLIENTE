@@ -1,17 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. Controle do Menu Mobile ---
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const header = document.querySelector('header');
+   // --- 1. Controle do Menu Mobile (Corrigido com Delegação de Eventos) ---
+    // Usamos o 'document' para ouvir os cliques, assim o botão funciona mesmo se o HTML for recriado pelo Login.
     
-    if (menuToggle && navLinks) {
-        // Toggle menu
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
+    document.addEventListener('click', (e) => {
+        const menuToggleBtn = e.target.closest('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const header = document.querySelector('header');
+
+        // 1. Ação de Abrir/Fechar ao clicar no botão de Menu (Hambúrguer)
+        if (menuToggleBtn && navLinks) {
+            e.stopPropagation(); // Evita conflito com o clique fora do menu
             navLinks.classList.toggle('active');
             
-            const icon = menuToggle.querySelector('i');
+            const icon = menuToggleBtn.querySelector('i');
             if (navLinks.classList.contains('active')) {
                 icon.classList.remove('fa-bars');
                 icon.classList.add('fa-times');
@@ -20,49 +22,48 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 icon.classList.remove('fa-times');
                 icon.classList.add('fa-bars');
+                // Libera scroll do body
                 document.body.style.overflow = '';
             }
-        });
+            return; // Sai da função para não executar os comandos abaixo juntos
+        }
 
-        // Fecha menu ao clicar nos links
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                const icon = menuToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-                document.body.style.overflow = '';
-            });
-        });
-
-        // Fecha menu ao clicar fora
-        document.addEventListener('click', (e) => {
-            if (!header.contains(e.target) && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                const icon = menuToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-                document.body.style.overflow = '';
+        // 2. Fecha menu ao clicar em um dos links internos
+        if (e.target.closest('.nav-links a') && navLinks && navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+            const toggleIcon = document.querySelector('.menu-toggle i');
+            if (toggleIcon) {
+                toggleIcon.classList.remove('fa-times');
+                toggleIcon.classList.add('fa-bars');
             }
-        });
+            document.body.style.overflow = '';
+        }
 
-        // Fecha menu no resize para desktop
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                const icon = menuToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-                document.body.style.overflow = '';
+        // 3. Fecha menu ao clicar fora dele (qualquer lugar da tela que não seja o header)
+        if (navLinks && navLinks.classList.contains('active') && header && !header.contains(e.target)) {
+            navLinks.classList.remove('active');
+            const toggleIcon = document.querySelector('.menu-toggle i');
+            if (toggleIcon) {
+                toggleIcon.classList.remove('fa-times');
+                toggleIcon.classList.add('fa-bars');
             }
-        });
-    }
+            document.body.style.overflow = '';
+        }
+    });
+
+    // 4. Fecha menu caso o usuário rotacione o celular ou aumente a tela (Resize)
+    window.addEventListener('resize', () => {
+        const navLinks = document.querySelector('.nav-links');
+        if (window.innerWidth > 768 && navLinks && navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+            const toggleIcon = document.querySelector('.menu-toggle i');
+            if (toggleIcon) {
+                toggleIcon.classList.remove('fa-times');
+                toggleIcon.classList.add('fa-bars');
+            }
+            document.body.style.overflow = '';
+        }
+    });
 
     // --- 2. Simulação de Formulário de Busca ---
     const bookingForm = document.getElementById('booking-form');
