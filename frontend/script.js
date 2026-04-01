@@ -159,28 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 6. Conexão do Login com a Landing Page (Mudar Header) ---
-    const authContainer = document.getElementById('auth-container');
-    const token = localStorage.getItem('driveNowToken');
-    const userStr = localStorage.getItem('driveNowUser');
-
-    if (authContainer) {
-        if (token && userStr) {
-            const user = JSON.parse(userStr);
-            const userName = user.email.split('@')[0]; 
-            
-            authContainer.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <span style="font-weight: 500; color: var(--text-dark);">
-                        <i class="fas fa-user-circle" style="color: var(--primary-color);"></i> Olá, ${userName}
-                    </span>
-                    <button onclick="logout()" class="btn btn-outline" style="padding: 8px 15px;">Sair</button>
-                    <div class="menu-toggle"><i class="fas fa-bars"></i></div>
-                </div>
-            `;
-        }
-    }
-
     // --- Máscara e FAQ ---
     initializeFAQ();
     initializePhoneMask();
@@ -188,59 +166,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- FUNÇÕES FORA DO DOMContentLoaded ---
 
-// --- 7. Lógica de Reserva ---
-async function makeReservation(carId, carName) {
-    const token = localStorage.getItem('driveNowToken');
-    if (!token) {
-        alert('Você precisa estar logado para alugar um carro.');
-        window.location.href = 'login.html'; 
-        return;
-    }
-    const confirmar = confirm(`Deseja confirmar a reserva do veículo: ${carName}?`);
+// --- 7. Lógica de Reserva (Modo Portfólio Livre) ---
+function makeReservation(carId, carName) {
+    const confirmar = confirm(`Deseja simular a reserva do veículo: ${carName}?`);
     if (!confirmar) return;
 
-    try {
-        const response = await fetch('https://drivenow-backend-84d4.onrender.com/api/reserve', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` 
-            },
-            body: JSON.stringify({ carId: carId })
-        });
-        const data = await response.json();
-        if (response.ok) {
-            alert('🎉 ' + data.message + ' Sua reserva foi registrada!');
-        } else {
-            alert('Erro: ' + data.error);
-            if (response.status === 401 || response.status === 403) {
-                localStorage.removeItem('driveNowToken'); 
-                window.location.href = 'login.html';
-            }
-        }
-    } catch (error) {
-        alert('Erro ao conectar com o servidor.');
-    }
+    // Simula um tempinho de carregamento
+    setTimeout(() => {
+        alert(`🎉 Sucesso! A reserva do ${carName} foi confirmada! (Modo de Demonstração).`);
+    }, 500);
 }
 
-// --- 8. Lógica de Assinatura de Plano ---
+// --- 8. Lógica de Assinatura de Plano (Modo Portfólio Livre) ---
 function checkLoginAndSubscribe(planName) {
-    const token = localStorage.getItem('driveNowToken');
-    if (!token) {
-        alert('Você precisa estar logado para assinar o plano ' + planName + '.');
-        window.location.href = 'login.html'; 
-    } else {
-        alert('🎉 Redirecionando para a tela de pagamento do Plano ' + planName + '!');
-    }
-}
-
-// --- 9. Função de Logout ---
-function logout() {
-    if(confirm('Tem certeza que deseja sair?')) {
-        localStorage.removeItem('driveNowToken');
-        localStorage.removeItem('driveNowUser');
-        window.location.reload(); 
-    }
+    alert(`🎉 Sucesso! Simulando o redirecionamento para o pagamento do Plano ${planName}!`);
 }
 
 // --- Funções Secundárias ---
