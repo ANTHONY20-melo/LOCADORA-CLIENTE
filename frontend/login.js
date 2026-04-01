@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // Elementos da UI
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
@@ -14,40 +14,48 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             loginForm.style.display = 'none';
             registerForm.style.display = 'block';
-            formSubtitle.innerText = 'Crie sua conta e comece a dirigir.';
+            formSubtitle.innerText = 'Crie sua conta';
         });
 
         showLoginBtn.addEventListener('click', (e) => {
             e.preventDefault();
             registerForm.style.display = 'none';
             loginForm.style.display = 'block';
-            formSubtitle.innerText = 'Bem-vindo de volta! Faça login para continuar.';
+            formSubtitle.innerText = 'Entre na sua conta';
         });
     }
 
-    // --- FUNÇÃO: ESQUECEU A SENHA (Simulação) ---
+    // --- FUNÇÃO: ESQUECEU A SENHA ---
     if (forgotPasswordBtn) {
         forgotPasswordBtn.addEventListener('click', (e) => {
             e.preventDefault();
             const email = prompt("Digite o e-mail cadastrado para recuperar sua senha:");
             if (email) {
-                // Em um sistema real, isso chamaria uma rota no back-end para enviar o e-mail
-                alert(`Um link de recuperação foi enviado para: ${email}\n(Simulação)`);
+                // Simulação - em produção, enviaria e-mail
+                alert(`Um link de recuperação foi enviado para: ${email}\n\nNota: Esta é uma simulação. Para redefinir a senha do admin, use: admin / 123`);
             }
         });
     }
 
-    // --- FUNÇÃO: LOGIN REAL ---
+    // --- FUNÇÃO: LOGIN ---
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const btn = loginForm.querySelector('button');
-            const originalText = btn.innerText;
 
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Autenticando...';
+            // Validação básica de e-mail ou usuário admin
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email !== 'admin' && !emailRegex.test(email)) {
+                alert('Por favor, insira um e-mail válido ou usuário admin (admin).');
+                return;
+            }
+
+            const btn = loginForm.querySelector('.btn-login');
+            const originalHTML = btn.innerHTML;
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
             btn.disabled = true;
 
             try {
@@ -62,8 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok) {
                     localStorage.setItem('driveNowToken', data.token);
                     localStorage.setItem('driveNowUser', JSON.stringify(data.user));
-                    
-                    // Se for o admin, manda pro painel admin. Se for cliente, manda pra Home.
+
                     if (data.user.email === 'admin') {
                         window.location.href = 'admin.html';
                     } else {
@@ -71,19 +78,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } else {
                     alert(data.error);
-                    btn.innerText = originalText;
-                    btn.disabled = false;
                 }
             } catch (error) {
                 console.error('Erro:', error);
-                alert('Erro ao conectar com o servidor. O servidor Node.js está rodando?');
-                btn.innerText = originalText;
+                alert('Erro ao conectar com o servidor.');
+            } finally {
+                btn.innerHTML = originalHTML;
                 btn.disabled = false;
             }
         });
     }
 
-    // --- FUNÇÃO: CADASTRO REAL ---
+    // --- FUNÇÃO: CADASTRO ---
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -91,15 +97,28 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = document.getElementById('reg-email').value;
             const password = document.getElementById('reg-password').value;
             const confirmPassword = document.getElementById('reg-confirm-password').value;
-            const btn = registerForm.querySelector('button');
-            const originalText = btn.innerText;
+
+            // Validação básica de email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Por favor, insira um e-mail válido.');
+                return;
+            }
 
             if (password !== confirmPassword) {
                 alert("As senhas não coincidem!");
                 return;
             }
 
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
+            if (password.length < 6) {
+                alert("A senha deve ter pelo menos 6 caracteres!");
+                return;
+            }
+
+            const btn = registerForm.querySelector('.btn-login');
+            const originalHTML = btn.innerHTML;
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando...';
             btn.disabled = true;
 
             try {
@@ -123,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Erro:', error);
                 alert('Erro ao conectar com o servidor.');
             } finally {
-                btn.innerText = originalText;
+                btn.innerHTML = originalHTML;
                 btn.disabled = false;
             }
         });

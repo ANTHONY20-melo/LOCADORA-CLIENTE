@@ -127,13 +127,41 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             fleetContainer.innerHTML = '<p style="text-align:center; width:100%;">Carregando veículos...</p>';
 
-            // Usa URL relativa para evitar problemas de CORS e ambientes hospedados em subdomínios
-            const response = await fetch('https://drivenow-backend-84d4.onrender.com/api/cars');
-            const cars = await response.json();
+            const apiUrls = [
+                'http://localhost:3000/api/cars'
+            ];
+
+            let cars = null;
+            const timeoutMs = 8000;
+
+            for (const url of apiUrls) {
+                try {
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+                    const response = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timeout);
+
+                    if (!response.ok) throw new Error(`Status ${response.status}`);
+
+                    const data = await response.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        cars = data;
+                        break;
+                    }
+                } catch (error) {
+                    console.warn(`Falha no endpoint ${url}:`, error.message);
+                }
+            }
+
+            if (!Array.isArray(cars)) {
+                throw new Error('Resposta do catálogo inválida ou indisponível');
+            }
 
             // fallback se endpoint não devolver array
-            if (!Array.isArray(cars)) {
-                throw new Error('Resposta do catálogo inválida');
+            if (cars.length === 0) {
+                fleetContainer.innerHTML = '<p style="text-align:center; width:100%;">Nenhum veículo disponível no momento.</p>';
+                return;
             }
 
             fleetContainer.innerHTML = '';
@@ -190,6 +218,34 @@ document.addEventListener('DOMContentLoaded', () => {
                     transmission: 'Automático',
                     ac: true,
                     image_url: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1200'
+                }
+                ,{
+                    id: 103,
+                    name: 'BMW 320i',
+                    price: 320.00,
+                    seats: 5,
+                    luggage: 3,
+                    transmission: 'Automático',
+                    ac: true,
+                    image_url: 'https://images.unsplash.com/photo-1519643381401-22c77e60520e?auto=format&fit=crop&q=80&w=1200'
+                },{
+                    id: 104,
+                    name: 'Toyota Corolla',
+                    price: 220.00,
+                    seats: 5,
+                    luggage: 2,
+                    transmission: 'Automático',
+                    ac: true,
+                    image_url: 'https://images.unsplash.com/photo-1563720223624-c83bcec2b7c8?auto=format&fit=crop&q=80&w=1200'
+                },{
+                    id: 105,
+                    name: 'Jeep Renegade',
+                    price: 280.00,
+                    seats: 5,
+                    luggage: 3,
+                    transmission: 'Manual',
+                    ac: true,
+                    image_url: 'https://images.unsplash.com/photo-1588309495821-b9f0b103f3e1?auto=format&fit=crop&q=80&w=1200'
                 }
             ];
 
@@ -272,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <i class="fas fa-user-circle" style="color: var(--primary-color);"></i> Olá, ${userName}
                     </span>
                     <button onclick="logout()" class="btn btn-outline" style="padding: 8px 15px;">Sair</button>
-                    <div class="menu-toggle" style="display: none;"><i class="fas fa-bars"></i></div>
+                    <div class="menu-toggle"><i class="fas fa-bars"></i></div>
                 </div>
             `;
         }

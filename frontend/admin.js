@@ -286,9 +286,69 @@ function loadDashboardData() {
     // Aqui seria feita uma chamada para a API para atualizar os números
 }
 
-function loadVehiclesData() {
+async function loadVehiclesData() {
     console.log('Carregando dados dos veículos...');
-    // Aqui seria feita uma chamada para a API
+
+    const tbody = document.getElementById('vehicles-table-body');
+    const statTotal = document.querySelector('#sec-veiculos .fleet-stats .stat-mini:nth-child(1) .stat-number');
+    const statAvailable = document.querySelector('#sec-veiculos .fleet-stats .stat-mini:nth-child(2) .stat-number');
+    const statRented = document.querySelector('#sec-veiculos .fleet-stats .stat-mini:nth-child(3) .stat-number');
+    const statMaintenance = document.querySelector('#sec-veiculos .fleet-stats .stat-mini:nth-child(4) .stat-number');
+
+    if (tbody) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Carregando lista de veículos...</td></tr>';
+    }
+
+    try {
+        const response = await fetch(window.location.origin + '/api/cars');
+        if (!response.ok) throw new Error('Erro ao buscar carros');
+
+        const cars = await response.json();
+        if (!Array.isArray(cars)) throw new Error('Resposta de carros inválida');
+
+        const total = cars.length;
+        const available = cars.filter(c => c.status === undefined || c.status === 'Disponível').length;
+        const rented = cars.filter(c => c.status === 'Alugado').length;
+        const maintenance = cars.filter(c => c.status === 'Manutenção').length;
+
+        if (statTotal) statTotal.textContent = total;
+        if (statAvailable) statAvailable.textContent = available;
+        if (statRented) statRented.textContent = rented;
+        if (statMaintenance) statMaintenance.textContent = maintenance;
+
+        if (tbody) {
+            if (total === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Nenhum veículo encontrado.</td></tr>';
+            } else {
+                tbody.innerHTML = cars.map(car => {
+                    const status = car.status || 'Disponível';
+                    const statusClass = status.toLowerCase() === 'disponível' ? 'active'
+                        : status.toLowerCase() === 'alugado' ? 'completed'
+                        : status.toLowerCase() === 'manutenção' ? 'pending'
+                        : 'unknown';
+
+                    return `
+                        <tr>
+                            <td>#${car.id.toString().padStart(3, '0')}</td>
+                            <td>${car.name}</td>
+                            <td>${car.plate || '---'}</td>
+                            <td>R$ ${Number(car.price).toFixed(2)}</td>
+                            <td><span class="status ${statusClass}">${status}</span></td>
+                            <td>
+                                <button class="btn-action" title="Editar" onclick="editVehicle(${car.id})"><i class="fas fa-edit"></i></button>
+                                <button class="btn-action" title="Deletar" onclick="deleteVehicle(${car.id})"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        }
+    } catch (error) {
+        console.error('Erro ao carregar vehicles:', error);
+        if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#dc2626">Não foi possível carregar carros. Tente novamente.</td></tr>';
+        }
+    }
 }
 
 function loadClientsData() {
