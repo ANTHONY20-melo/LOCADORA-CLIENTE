@@ -1848,12 +1848,27 @@ input:checked + .slider:before {
         width: 100%;
     }
     
-    /* Força o botão do menu hambúrguer a aparecer e ser clicável */
+    /* Força o botão do menu a aparecer e sempre ser clicável */
     .menu-toggle {
-        display: block !important; 
+        display: flex !important; 
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
         position: relative;
-        z-index: 9999; /* Coloca ele na camada mais alta da tela */
-        padding: 10px;
+        z-index: 99999; /* Camada mais alta possível */
         cursor: pointer;
+        pointer-events: auto; /* Garante que pode ser clicado */
+    }
+
+    /* Impede que o próprio ícone "roube" ou bloqueie o clique */
+    .menu-toggle i {
+        pointer-events: none; 
+        font-size: 1.5rem;
+    }
+
+    /* Garante que o menu aberto fique por cima da tela preta */
+    .nav-links {
+        z-index: 99998; 
     }
 }

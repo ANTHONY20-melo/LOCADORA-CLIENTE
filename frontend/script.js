@@ -1,69 +1,59 @@
+// --- 1. CONTROLE DEFINITIVO DO MENU MOBILE ---
+// Colocado fora do DOMContentLoaded para capturar cliques globalmente com segurança
+document.addEventListener('click', function(e) {
+    // 1.1 Abrir/Fechar ao clicar no botão hambúrguer
+    if (e.target.closest('.menu-toggle')) {
+        const nav = document.querySelector('.nav-links');
+        if (nav) {
+            nav.classList.toggle('active');
+            
+            // Troca os ícones
+            const icones = document.querySelectorAll('.menu-toggle i');
+            icones.forEach(icone => {
+                icone.classList.toggle('fa-bars');
+                icone.classList.toggle('fa-times');
+            });
+            
+            // Trava ou libera o scroll do fundo
+            document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
+        }
+    }
+    
+    // 1.2 Fechar ao clicar em um link ou fora do menu
+    else if (e.target.closest('.nav-links a') || (!e.target.closest('.header-container') && document.querySelector('.nav-links.active'))) {
+        const nav = document.querySelector('.nav-links');
+        if (nav && nav.classList.contains('active')) {
+            nav.classList.remove('active');
+            
+            // Volta os ícones para 3 traços
+            const icones = document.querySelectorAll('.menu-toggle i');
+            icones.forEach(icone => {
+                icone.classList.remove('fa-times');
+                icone.classList.add('fa-bars');
+            });
+            
+            document.body.style.overflow = '';
+        }
+    }
+});
+
+// Fecha menu caso o usuário rotacione o celular ou aumente a tela (Resize)
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        const nav = document.querySelector('.nav-links');
+        if (nav && nav.classList.contains('active')) {
+            nav.classList.remove('active');
+            document.querySelectorAll('.menu-toggle i').forEach(i => {
+                i.classList.remove('fa-times');
+                i.classList.add('fa-bars');
+            });
+            document.body.style.overflow = '';
+        }
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. Controle do Menu Mobile (Corrigido com Delegação de Eventos) ---
-    // Usamos o 'document' para ouvir os cliques, assim o botão funciona mesmo se o HTML for recriado pelo Login.
-    document.addEventListener('click', (e) => {
-        const menuToggleBtn = e.target.closest('.menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
-        const header = document.querySelector('header');
-
-        // Ação de Abrir/Fechar ao clicar no botão de Menu (Hambúrguer)
-        if (menuToggleBtn && navLinks) {
-            e.stopPropagation(); // Evita conflito com o clique fora do menu
-            navLinks.classList.toggle('active');
-            
-            const icon = menuToggleBtn.querySelector('i');
-            if (navLinks.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-                // Impede scroll do body quando menu está aberto
-                document.body.style.overflow = 'hidden';
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-                // Libera scroll do body
-                document.body.style.overflow = '';
-            }
-            return; // Sai da função para não executar os comandos abaixo
-        }
-
-        // Fecha menu ao clicar em um dos links internos
-        if (e.target.closest('.nav-links a') && navLinks && navLinks.classList.contains('active')) {
-            navLinks.classList.remove('active');
-            const toggleIcon = document.querySelector('.menu-toggle i');
-            if (toggleIcon) {
-                toggleIcon.classList.remove('fa-times');
-                toggleIcon.classList.add('fa-bars');
-            }
-            document.body.style.overflow = '';
-        }
-
-        // Fecha menu ao clicar fora dele
-        if (navLinks && navLinks.classList.contains('active') && header && !header.contains(e.target)) {
-            navLinks.classList.remove('active');
-            const toggleIcon = document.querySelector('.menu-toggle i');
-            if (toggleIcon) {
-                toggleIcon.classList.remove('fa-times');
-                toggleIcon.classList.add('fa-bars');
-            }
-            document.body.style.overflow = '';
-        }
-    });
-
-    // Fecha menu caso o usuário rotacione o celular ou aumente a tela (Resize)
-    window.addEventListener('resize', () => {
-        const navLinks = document.querySelector('.nav-links');
-        if (window.innerWidth > 768 && navLinks && navLinks.classList.contains('active')) {
-            navLinks.classList.remove('active');
-            const toggleIcon = document.querySelector('.menu-toggle i');
-            if (toggleIcon) {
-                toggleIcon.classList.remove('fa-times');
-                toggleIcon.classList.add('fa-bars');
-            }
-            document.body.style.overflow = '';
-        }
-    });
-
     // --- 2. Simulação de Formulário de Busca ---
     const bookingForm = document.getElementById('booking-form');
     
@@ -83,16 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.disabled = false;
                 window.location.href = '#frota'; 
             }, 1500);
-        });
-    }
-
-    // --- 2.1 Simulação de envio do formulário de contato ---
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Mensagem enviada com sucesso! Em breve entraremos em contato.');
-            contactForm.reset();
         });
     }
 
@@ -190,59 +170,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
         } catch (error) {
-            console.error("Erro ao carregar a frota:", error);
-            // Fallback local com alguns carros de modelo se o servidor estiver inacessível
+            console.error("Erro ao carregar a frota. Usando Fallback local.", error);
+            
+            // Fallback local com carros de modelo se o servidor estiver inacessível (Muito bem pensado!)
             const fallbackCars = [
-                {
-                    id: 101,
-                    name: 'Audi RS7',
-                    price: 450.00,
-                    seats: 4,
-                    luggage: 2,
-                    transmission: 'Automático',
-                    ac: true,
-                    image_url: 'https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&q=80&w=1200'
-                },
-                {
-                    id: 102,
-                    name: 'Range Rover Velar',
-                    price: 520.00,
-                    seats: 5,
-                    luggage: 4,
-                    transmission: 'Automático',
-                    ac: true,
-                    image_url: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1200'
-                },
-                {
-                    id: 103,
-                    name: 'BMW 320i',
-                    price: 320.00,
-                    seats: 5,
-                    luggage: 3,
-                    transmission: 'Automático',
-                    ac: true,
-                    image_url: 'https://images.unsplash.com/photo-1519643381401-22c77e60520e?auto=format&fit=crop&q=80&w=1200'
-                },
-                {
-                    id: 104,
-                    name: 'Toyota Corolla',
-                    price: 220.00,
-                    seats: 5,
-                    luggage: 2,
-                    transmission: 'Automático',
-                    ac: true,
-                    image_url: 'https://images.unsplash.com/photo-1563720223624-c83bcec2b7c8?auto=format&fit=crop&q=80&w=1200'
-                },
-                {
-                    id: 105,
-                    name: 'Jeep Renegade',
-                    price: 280.00,
-                    seats: 5,
-                    luggage: 3,
-                    transmission: 'Manual',
-                    ac: true,
-                    image_url: 'https://images.unsplash.com/photo-1588309495821-b9f0b103f3e1?auto=format&fit=crop&q=80&w=1200'
-                }
+                { id: 101, name: 'Audi RS7', price: 450.00, seats: 4, luggage: 2, transmission: 'Automático', ac: true, image_url: 'https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&q=80&w=1200' },
+                { id: 102, name: 'Range Rover Velar', price: 520.00, seats: 5, luggage: 4, transmission: 'Automático', ac: true, image_url: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1200' },
+                { id: 103, name: 'BMW 320i', price: 320.00, seats: 5, luggage: 3, transmission: 'Automático', ac: true, image_url: 'https://images.unsplash.com/photo-1519643381401-22c77e60520e?auto=format&fit=crop&q=80&w=1200' },
+                { id: 104, name: 'Toyota Corolla', price: 220.00, seats: 5, luggage: 2, transmission: 'Automático', ac: true, image_url: 'https://images.unsplash.com/photo-1563720223624-c83bcec2b7c8?auto=format&fit=crop&q=80&w=1200' },
+                { id: 105, name: 'Jeep Renegade', price: 280.00, seats: 5, luggage: 3, transmission: 'Manual', ac: true, image_url: 'https://images.unsplash.com/photo-1588309495821-b9f0b103f3e1?auto=format&fit=crop&q=80&w=1200' }
             ];
 
             fleetContainer.innerHTML = '';
