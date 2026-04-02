@@ -300,7 +300,7 @@ async function loadVehiclesData() {
     }
 
     try {
-        const response = await fetch(window.location.origin + '/api/cars');
+        const response = await fetch('https://drivenow-backend-84d4.onrender.com/api/cars');
         if (!response.ok) throw new Error('Erro ao buscar carros');
 
         const cars = await response.json();
