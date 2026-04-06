@@ -41,25 +41,74 @@ document.addEventListener('click', function(e) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 2. Simulação de Formulário de Busca ---
+    // --- 2. NOVA Lógica do Formulário de Busca (Desliza até a frota) ---
     const bookingForm = document.getElementById('booking-form');
     if (bookingForm) {
         bookingForm.addEventListener('submit', (e) => {
             e.preventDefault(); 
             const btn = bookingForm.querySelector('button');
             const originalText = btn.innerText;
-            btn.innerText = 'Buscando disponibilidade...';
+            
+            // Efeito visual de carregando
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Buscando...';
             btn.disabled = true;
+            
+            // Simula busca e desliza a tela
             setTimeout(() => {
-                alert('Busca realizada com sucesso! Desça a página para ver a frota.');
                 btn.innerText = originalText;
                 btn.disabled = false;
-                window.location.href = '#frota'; 
+                document.getElementById('frota').scrollIntoView({ behavior: 'smooth' });
             }, 1500);
         });
     }
 
-    // --- 3. Destaque de link ativo no scroll ---
+    // --- 3. NOVA Lógica do Formulário DENTRO DO POP-UP (Conexão Real) ---
+    const confirmForm = document.getElementById('confirm-rent-form');
+    if(confirmForm) {
+        confirmForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+            
+            const token = localStorage.getItem('driveNowToken');
+            const carId = document.getElementById('modal-car-id').value;
+            const btn = confirmForm.querySelector('button');
+            const originalText = btn.innerText;
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+            btn.disabled = true;
+
+            try {
+                // Envia para o Back-end Real no Render
+                const response = await fetch('https://drivenow-backend-84d4.onrender.com/api/reserve', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` 
+                    },
+                    body: JSON.stringify({ carId: carId })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('🎉 ' + data.message + ' Sua reserva foi registrada!');
+                    closeRentModal(); // Fecha o pop-up
+                } else {
+                    alert('Erro: ' + data.error);
+                    if (response.status === 401 || response.status === 403) {
+                        localStorage.removeItem('driveNowToken'); 
+                        window.location.href = 'login.html';
+                    }
+                }
+            } catch (error) {
+                alert('Erro ao conectar com o servidor.');
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        });
+    }
+
+    // --- 4. Destaque de link ativo no scroll ---
     const sections = document.querySelectorAll('section');
     const navItems = document.querySelectorAll('.nav-links a');
     window.addEventListener('scroll', () => {
@@ -78,17 +127,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 4. Carregar Frota Dinamicamente (SEM TIMEOUT) ---
+    // --- 5. Carregar Frota Dinamicamente ---
     const fleetContainer = document.getElementById('fleet-container');
 
     async function loadFleet() {
         if (!fleetContainer) return; 
 
         try {
-            // Mensagem avisando que o servidor pode estar acordando
             fleetContainer.innerHTML = '<p style="text-align:center; width:100%; color: var(--primary-color); font-weight: 500;"><i class="fas fa-spinner fa-spin"></i> Conectando ao sistema de veículos (Pode levar até 50 segundos no primeiro acesso)...</p>';
 
-            // Faz a requisição e ESPERA o tempo que for necessário
             const response = await fetch('https://drivenow-backend-84d4.onrender.com/api/cars');
             
             if (!response.ok) throw new Error('Erro na comunicação com o servidor');
@@ -133,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadFleet();
 
-    // --- 5. Lógica de Alternância de Preços (Mensal/Anual) ---
+    // --- 6. Lógica de Alternância de Preços (Mensal/Anual) ---
     const togglePricing = document.getElementById('toggle-pricing');
     const priceAmounts = document.querySelectorAll('.pricing-card .amount');
     const textMonthly = document.getElementById('text-monthly');
@@ -159,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 6. Conexão do Login com a Landing Page (Mudar Header) ---
+    // --- 7. Conexão do Login com a Landing Page (Mudar Header) ---
     const authContainer = document.getElementById('auth-container');
     const token = localStorage.getItem('driveNowToken');
     const userStr = localStorage.getItem('driveNowUser');
@@ -186,44 +233,41 @@ document.addEventListener('DOMContentLoaded', () => {
     initializePhoneMask();
 });
 
-// --- FUNÇÕES FORA DO DOMContentLoaded ---
 
-// --- 7. Lógica de Reserva (REAL) ---
-async function makeReservation(carId, carName) {
+// ====================================================
+// FUNÇÕES FORA DO DOMContentLoaded
+// ====================================================
+
+// --- 8. ABRIR POP-UP DE RESERVA (NOVO) ---
+function makeReservation(carId, carName) {
     const token = localStorage.getItem('driveNowToken');
+    
+    // 1. Verifica se está logado antes de abrir
     if (!token) {
         alert('Você precisa estar logado para alugar um carro.');
         window.location.href = 'login.html'; 
         return;
     }
-    const confirmar = confirm(`Deseja confirmar a reserva do veículo: ${carName}?`);
-    if (!confirmar) return;
 
-    try {
-        const response = await fetch('https://drivenow-backend-84d4.onrender.com/api/reserve', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` 
-            },
-            body: JSON.stringify({ carId: carId })
-        });
-        const data = await response.json();
-        if (response.ok) {
-            alert('🎉 ' + data.message + ' Sua reserva foi registrada!');
-        } else {
-            alert('Erro: ' + data.error);
-            if (response.status === 401 || response.status === 403) {
-                localStorage.removeItem('driveNowToken'); 
-                window.location.href = 'login.html';
-            }
-        }
-    } catch (error) {
-        alert('Erro ao conectar com o servidor.');
-    }
+    // 2. Se estiver logado, pega os elementos do modal
+    const modal = document.getElementById('rent-modal');
+    const title = document.getElementById('modal-car-name');
+    const inputId = document.getElementById('modal-car-id');
+
+    // 3. Preenche com os dados do carro clicado
+    title.innerText = `Alugar: ${carName}`;
+    inputId.value = carId;
+
+    // 4. Mostra o pop-up
+    modal.classList.add('active');
 }
 
-// --- 8. Lógica de Assinatura de Plano (REAL) ---
+// --- 9. FECHAR POP-UP DE RESERVA ---
+function closeRentModal() {
+    document.getElementById('rent-modal').classList.remove('active');
+}
+
+// --- 10. Lógica de Assinatura de Plano ---
 function checkLoginAndSubscribe(planName) {
     const token = localStorage.getItem('driveNowToken');
     if (!token) {
@@ -234,7 +278,7 @@ function checkLoginAndSubscribe(planName) {
     }
 }
 
-// --- 9. Função de Logout ---
+// --- 11. Função de Logout ---
 function logout() {
     if(confirm('Tem certeza que deseja sair?')) {
         localStorage.removeItem('driveNowToken');
@@ -243,7 +287,7 @@ function logout() {
     }
 }
 
-// --- Funções Secundárias ---
+// --- Funções Secundárias (FAQ e Máscara) ---
 function initializeFAQ() {
     const faqItems = document.querySelectorAll('.faq-item');
     faqItems.forEach(item => {

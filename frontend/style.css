@@ -1872,3 +1872,74 @@ input:checked + .slider:before {
         z-index: 99998; 
     }
 }
+
+/* =========================================
+   AJUSTE DO LOGO NO FOOTER (RODAPÉ)
+   ========================================= */
+footer .logo {
+    color: #ffffff !important; /* Faz o "Drive" ficar branco para aparecer no fundo escuro */
+    display: block; /* Ocupa a linha inteira */
+    text-align: center; /* Centraliza o texto */
+    margin-bottom: 15px;
+}
+
+footer .logo span {
+    color: #2563eb; /* Mantém o "Now" azul (ajuste a cor se seu azul for diferente) */
+}
+
+/* Garante que tudo na coluna do rodapé fique centralizado no celular */
+@media (max-width: 768px) {
+    .footer-col {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* =========================================
+   ESTILOS DO POP-UP (MODAL) DE ALUGUEL
+   ========================================= */
+.modal-overlay {
+    display: none; /* Fica escondido por padrão */
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Fundo escuro transparente */
+    z-index: 9999; /* Fica por cima de tudo no site */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Quando o JS adiciona a classe 'active', ele aparece */
+.modal-overlay.active {
+    display: flex; 
+}
+
+.modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+    animation: slideDown 0.3s ease-out;
+}
+
+/* Animação suave descendo */
+@keyframes slideDown {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px; right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #999;
+    transition: 0.2s;
+}
+
+.close-btn:hover {
+    color: #e63946;
+}

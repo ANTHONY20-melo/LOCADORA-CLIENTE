@@ -216,6 +216,26 @@
         </div>
     </section>
 
+    <div id="rent-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeRentModal()">&times;</span>
+            <h2 id="modal-car-name" style="margin-bottom: 10px; color: var(--primary-color);">Alugar Veículo</h2>
+            <p style="margin-bottom: 20px; font-size: 14px; color: #666;">Preencha os dados abaixo para confirmar sua reserva.</p>
+            
+            <form id="confirm-rent-form">
+                <input type="hidden" id="modal-car-id">
+                <div class="form-group">
+                    <label>Data de Retirada</label>
+                    <input type="date" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Data de Devolução</label>
+                    <input type="date" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 20px;">Confirmar Reserva</button>
+            </form>
+        </div>
+    </div>
     <footer>
         <div class="container footer-content">
             <div class="footer-col">
